@@ -1,0 +1,66 @@
+﻿@model IEnumerable<TMS_Application.ViewModel.BatchViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@{
+    if(ViewBag.msg!=null){
+        @ViewBag.msg
+    }
+    else{
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BatchName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BatchCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BatchName)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CourseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BatchCount)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.BatchId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.BatchId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.BatchId })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}}
