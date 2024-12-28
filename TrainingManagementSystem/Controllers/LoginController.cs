@@ -22,13 +22,14 @@ namespace TMS_Application.Controllers
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         }
+        [HttpGet]
         public IActionResult Login()
         {
             LoginViewModel loginViewModel = new LoginViewModel();
             return View(loginViewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel user)
+        public async Task<IActionResult> Login1(LoginViewModel user)
         {
             try
             {
@@ -37,7 +38,7 @@ namespace TMS_Application.Controllers
                 var contentType = new MediaTypeWithQualityHeaderValue
 ("application/json");
                 client.DefaultRequestHeaders.Accept.Add(contentType);
-                HttpResponseMessage response = await client.PostAsync("api/Authenticate", content);
+                HttpResponseMessage response = await client.PostAsync("api/Authentication", content);
                 if (response.IsSuccessStatusCode)
                 {
                     var stringJWT = response.Content.ReadAsStringAsync().Result;

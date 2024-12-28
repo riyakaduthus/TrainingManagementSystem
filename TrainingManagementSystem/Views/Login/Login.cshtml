@@ -1,6 +1,7 @@
 ﻿@model TMS_Application.ViewModel.LoginViewModel
 @{
     ViewData["Title"] = "Login";
+	Layout = "~/Views/Shared/LoginLayout.cshtml";
 }
 
 <h1>Login</h1>
@@ -13,10 +14,9 @@
         @ViewBag.msg
     }
 }
-
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Login">
+        <form asp-action="Login1" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
@@ -33,10 +33,6 @@
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
