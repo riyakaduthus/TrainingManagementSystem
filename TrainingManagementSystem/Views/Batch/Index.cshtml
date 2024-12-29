@@ -56,9 +56,12 @@
                 @Html.DisplayFor(modelItem => item.BatchCount)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.BatchId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.BatchId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.BatchId })
+			
+       @Html.ActionLink("Edit", "Edit", new { id = item.BatchId })|
+       @Html.ActionLink("Delete", "Delete", new { id = item.BatchId }) |
+       @Html.ActionLink("Details", "Details", new { id = item.BatchId }) |
+       @Html.ActionLink("Enrollment", "Enrollment","Enrollment", new { id = item.BatchId })
+                                 
             </td>
         </tr>
 }

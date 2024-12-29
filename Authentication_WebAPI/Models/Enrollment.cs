@@ -1,4 +1,5 @@
-﻿using TMS_WebAPI.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using TMS_WebAPI.Models;
 
 namespace Authentication_WebAPI.Models
 {
@@ -7,12 +8,13 @@ namespace Authentication_WebAPI.Models
         public int EnrollmentId { get; set; }
         public int EnrollmentStatus { get; set; }
         public DateTime RequestedDate { get; set; }
-        public int UserId {  get; set; }
-        public User? User { get; set; }
+        [ForeignKey(nameof(User)), Column(Order = 0)]
+        public int? UserId {  get; set; }
+
+        public virtual User? User { get; set; }
 
         public int BatchId { get; set; }
-        public Batch? Batch { get; set; }   
-
+        public Batch? Batch { get; set; }        
         public List<Feedback>? Feedbacks { get; set; }
         public int CreatedBy { get; set; }
 
@@ -22,9 +24,13 @@ namespace Authentication_WebAPI.Models
 
         public DateTime? Updated { get; set; }
 
+        [ForeignKey(nameof(Manager)), Column(Order = 1)]
+        public int? ManagerId { get; set; }
         public bool IsActive { get; set; } // is to perform soft delete
 
-
-
+       // [ForeignKey("ManagerId")]
+       
+        public virtual User? Manager { get; set; }
+        
     }
 }

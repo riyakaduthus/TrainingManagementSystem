@@ -47,19 +47,20 @@ namespace TMS_WebAPI.Repo
         }
         public List<EnrollmentViewModel> GetEnrollmentViews()
         {
-            List<EnrollmentViewModel> enroll = (from x in _dbContext.Enrollments
-                                                join y in _dbContext.Users on x.UserId equals y.UserId
-                                                join z in _dbContext.Batches on x.BatchId equals z.BatchId
-                                                select new EnrollmentViewModel
-                                                {
-                                                    EnrollmentId = x.EnrollmentId,
-                                                    UserId = x.UserId,
-                                                    UserName = y.UserName,
-                                                    BatchId = z.BatchId,
-                                                    BatchName = z.BatchName,
-                                                    EnrollmentStatus = x.EnrollmentStatus,
-                                                    RequestedDate = x.RequestedDate
-                                                }).ToList();
+            List<EnrollmentViewModel> enroll = null;
+            //(from x in _dbContext.Enrollments
+            //                                    join y in _dbContext.Users on x.UserId equals y.UserId
+            //                                    join z in _dbContext.Batches on x.BatchId equals z.BatchId
+            //                                    select new EnrollmentViewModel
+            //                                    {
+            //                                        EnrollmentId = x.EnrollmentId,
+            //                                        UserId = x.UserId,
+            //                                        UserName = y.UserName,
+            //                                        BatchId = z.BatchId,
+            //                                        BatchName = z.BatchName,
+            //                                        EnrollmentStatus = x.EnrollmentStatus,
+            //                                        RequestedDate = x.RequestedDate
+            //                                    }).ToList();
             return enroll;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using Azure;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +25,7 @@ namespace TMS_Application.Controllers
         {
            client.DefaultRequestHeaders.Authorization = 
                 new AuthenticationHeaderValue("Bearer",HttpContext.Session.GetString("token"));
-
+            
             HttpResponseMessage response = await client.GetAsync("api/Course");
             if (response.IsSuccessStatusCode)
             {

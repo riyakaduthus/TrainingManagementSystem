@@ -87,7 +87,7 @@ namespace TMS_WebAPI.Repo
             List<BatchViewModel> batchView = (from x in _dbContext.Batches
                                               join y in _dbContext.Courses
                                               on x.CourseId equals y.CourseId
-                                              where x.IsActive == true
+                                              where x.IsActive == true 
                                               select new BatchViewModel
                                               {
                                                   BatchName = x.BatchName,
@@ -95,7 +95,8 @@ namespace TMS_WebAPI.Repo
                                                   StartDate = x.StartDate,
                                                   EndDate = x.EndDate,
                                                   BatchCount = x.BatchCount,
-                                                  BatchId = x.BatchId
+                                                  BatchId = x.BatchId,
+                                                  Availablity = y.Availablity
                                               }).ToList();         
 
             return batchView;
@@ -116,5 +117,6 @@ namespace TMS_WebAPI.Repo
                                                  }).ToList();
             return courseModel;
         }
+
     }
 }

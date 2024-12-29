@@ -64,7 +64,7 @@ namespace TMS_Application.Controllers
         // POST: EnrollmentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Enrollment(IFormCollection collection)
         {
             try
             {

@@ -45,7 +45,6 @@ namespace TMS_Application.Controllers
                     JWT jwt = JsonConvert.DeserializeObject<JWT>(stringJWT);
 
                     HttpContext.Session.SetString("token", jwt.Token);
-
                     return RedirectToAction("Index", "Course");
                 }
                 else

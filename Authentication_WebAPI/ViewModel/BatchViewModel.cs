@@ -8,6 +8,7 @@
         public int BatchId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public bool Availablity { get; set; }
         /// <summary>
         /// number persons can be accomedeated to the batch
         /// </summary>

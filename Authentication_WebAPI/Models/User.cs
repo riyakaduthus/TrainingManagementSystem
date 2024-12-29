@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace Authentication_WebAPI.Models
 {
@@ -15,8 +16,11 @@ namespace Authentication_WebAPI.Models
         [ForeignKey("ManagerId")]
         public int? ManagerId { get; set; }
         public User? Manager { get; set; }
+        [InverseProperty(nameof(Enrollment.User))]
+        public virtual List<Enrollment>? Enrollments { get; set; }
+        [InverseProperty(nameof(Enrollment.Manager))]
+        public virtual List<Enrollment>? Enrollments1 { get; set; }
 
-        public List<Enrollment>? Enrollments { get; set; }
         public int CreatedBy { get; set; }
 
         public DateTime CreatedOn { get; set; }

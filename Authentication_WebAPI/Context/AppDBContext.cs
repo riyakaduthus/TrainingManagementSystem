@@ -1,4 +1,5 @@
-﻿using Authentication_WebAPI.Models;
+﻿using System.Text.RegularExpressions;
+using Authentication_WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using TMS_WebAPI.Models;
 
@@ -25,6 +26,18 @@ namespace Authentication_WebAPI.Context
                  new Role() { RoleId = 2, RoleName = "Manager" },
                  new Role() { RoleId = 3, RoleName = "User" }
                 );
+
+            //modelBuilder.Entity<Enrollment>()
+            //        .HasRequired(m => m.User)
+            //        .WithMany(t => t.HomeMatches)
+            //        .HasForeignKey(m => m.HomeTeamId)
+            //        .WillCascadeOnDelete(false);
+
+            //modelBuilder.Entity<Match>()
+            //            .HasRequired(m => m.GuestTeam)
+            //            .WithMany(t => t.AwayMatches)
+            //            .HasForeignKey(m => m.GuestTeamId)
+            //            .WillCascadeOnDelete(false);
         }
     }
 }
