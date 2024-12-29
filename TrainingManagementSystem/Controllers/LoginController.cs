@@ -14,13 +14,13 @@ namespace TMS_Application.Controllers
     {
         ILogger<LoginController> _logger;
         HttpClient client = new HttpClient();
+
         public LoginController(ILogger<LoginController> logger)
-        {
+        { 
             _logger = logger;
-            client.BaseAddress = new Uri("https://localhost:5244/");
+            client.BaseAddress = new Uri("https://localhost:7206/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
         }
         [HttpGet]
         public IActionResult Login()
@@ -29,7 +29,7 @@ namespace TMS_Application.Controllers
             return View(loginViewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Login1(LoginViewModel user)
+        public async Task<IActionResult> Login(LoginViewModel user)
         {
             try
             {
@@ -43,9 +43,9 @@ namespace TMS_Application.Controllers
                 {
                     var stringJWT = response.Content.ReadAsStringAsync().Result;
                     JWT jwt = JsonConvert.DeserializeObject<JWT>(stringJWT);
-                    
+
                     HttpContext.Session.SetString("token", jwt.Token);
-                 
+
                     return RedirectToAction("Index", "Course");
                 }
                 else
@@ -59,10 +59,11 @@ namespace TMS_Application.Controllers
             {
                 return View();
             }
-
-
-
         }
-
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("token");
+            return RedirectToAction("Login");
+        }
     }
 }

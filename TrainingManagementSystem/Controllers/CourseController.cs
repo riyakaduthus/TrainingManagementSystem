@@ -14,9 +14,10 @@ namespace TMS_Application.Controllers
         static List<Course> course = null;
         public CourseController()
         {
-            client.BaseAddress = new Uri("http://localhost:5244/");
+            client.BaseAddress = new Uri("https://localhost:7206/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.Timeout = TimeSpan.FromMinutes(2);
         }
         // GET: CourseController
         public async Task<ActionResult> Index()
@@ -50,6 +51,9 @@ namespace TMS_Application.Controllers
         // GET: CourseController/Details/5
         public async Task<ActionResult> Details(int id)
         {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
             HttpResponseMessage response = await client.GetAsync("api/Course/" + id);
             if (response.IsSuccessStatusCode)
             {
@@ -122,6 +126,9 @@ namespace TMS_Application.Controllers
         // GET : CourseController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
             HttpResponseMessage response = await client.GetAsync("api/Course/" + id);
             if (response.IsSuccessStatusCode)
             {
@@ -169,15 +176,8 @@ namespace TMS_Application.Controllers
                     var jsonString = response.Content.ReadAsStringAsync();
                     jsonString.Wait();
                     var temp = JsonConvert.DeserializeObject<Course>(jsonString.Result);
-                    if (temp!=null)
-                    {
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        ViewBag.msg = "some error occured,Try again Later";
-                        return View();
-                    }
+                     return RedirectToAction(nameof(Index));
+                    
                 }
                 else
                 {
@@ -194,6 +194,9 @@ namespace TMS_Application.Controllers
         // GET: CourseController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
             HttpResponseMessage response = await client.GetAsync("api/Course/" + id);
             if (response.IsSuccessStatusCode)
             {

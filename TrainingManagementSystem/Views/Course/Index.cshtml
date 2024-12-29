@@ -2,66 +2,68 @@
 
 @{
     ViewData["Title"] = "Index";
-	Layout = "~/Views/Shared/TMSHomeLayout.cshtml";
+    
 }
+@{
+    if (@ViewBag.msg != null)
+    {
+        @ViewBag.msg
+    }
+    else
+    {
 
 <h1>Index</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-@{if (@ViewBag.msg != null)
-    {
-        @ViewBag.msg
-    }
-    else 
-    {
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DurationInDays)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Availablity)
-            </th>
-            
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            @* <td>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DurationInDays)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Availablity)
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        @* <td>
                 @Html.DisplayFor(modelItem => item.CourseId)
             </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DurationInDays)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Availablity)
-            </td>
-           
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.CourseId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.CourseId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.CourseId })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-}
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CourseName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CourseDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DurationInDays)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Availablity)
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id=item.CourseId }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.CourseId }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.CourseId })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        IgnoreBody();
+    }
 }

@@ -17,7 +17,7 @@ namespace TMS_Application.Controllers
 
         public UserController()
         {
-            client.BaseAddress = new Uri("http://localhost:5244/");
+            client.BaseAddress = new Uri("https://localhost:7206/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -25,7 +25,11 @@ namespace TMS_Application.Controllers
         public async Task<ActionResult> Index()
         {
             List<UserRoleViewModel> user = null;
-            try {
+            try
+            {
+                client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
                 HttpResponseMessage response = await client.GetAsync("api/User");
                 if (response.IsSuccessStatusCode)
                 {
@@ -57,6 +61,9 @@ namespace TMS_Application.Controllers
         {            
             try 
             {
+                client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
                 HttpResponseMessage response = await client.GetAsync("api/User/" + id);
                 if (response.IsSuccessStatusCode)
                 {
@@ -91,35 +98,45 @@ namespace TMS_Application.Controllers
         {
             List<Role> roles = null;
             List<UserRoleViewModel> manager = null;
-            HttpResponseMessage response = await client.GetAsync("api/User/GetRoles");
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var jsonString = response.Content.ReadAsStringAsync();
-                jsonString.Wait();
-                roles = JsonConvert.DeserializeObject<List<Role>>(jsonString.Result);
-            }
-            if (roles == null || !roles.Any())
-            {
-                ViewBag.Msg = "No Role is available";
-            }
-            ViewBag.roles = new SelectList(roles, "RoleId", "RoleName");
+                client.DefaultRequestHeaders.Authorization =
+                   new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
 
-             
-            HttpResponseMessage msg = await client.GetAsync("api/User/GetManagerName");
-            if (msg.IsSuccessStatusCode)
-            {
-                var jsonString = msg.Content.ReadAsStringAsync();
-                jsonString.Wait();
-                manager = JsonConvert.DeserializeObject<List<UserRoleViewModel>>(jsonString.Result);
-            }
-            if (manager == null || !manager.Any())
-            {
-                ViewBag.Msg = "No Manager is available";
-            }
-            ViewBag.manager = new SelectList(manager, "ManagerId", "ManagerName");
+                HttpResponseMessage response = await client.GetAsync("api/User/GetRoles");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = response.Content.ReadAsStringAsync();
+                    jsonString.Wait();
+                    roles = JsonConvert.DeserializeObject<List<Role>>(jsonString.Result);
+                }
+                if (roles == null || !roles.Any())
+                {
+                    ViewBag.Msg = "No Role is available";
+                }
+                ViewBag.roles = new SelectList(roles, "RoleId", "RoleName");
 
 
-            return View();
+                HttpResponseMessage msg = await client.GetAsync("api/User/GetManagerName");
+                if (msg.IsSuccessStatusCode)
+                {
+                    var jsonString = msg.Content.ReadAsStringAsync();
+                    jsonString.Wait();
+                    manager = JsonConvert.DeserializeObject<List<UserRoleViewModel>>(jsonString.Result);
+                }
+                if (manager == null || !manager.Any())
+                {
+                    ViewBag.Msg = "No Manager is available";
+                }
+                ViewBag.manager = new SelectList(manager, "ManagerId", "ManagerName");
+
+
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // POST: UserController/Create
@@ -133,6 +150,9 @@ namespace TMS_Application.Controllers
             usr.UserId ??= 0;
             try
             {
+                client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
                 StringContent content = new StringContent
                     (JsonConvert.SerializeObject(usr), Encoding.UTF8, "application/json");
                 var contentType = new MediaTypeWithQualityHeaderValue("application/json");
@@ -165,59 +185,69 @@ namespace TMS_Application.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             List<Role> roles = null;
-            List<UserRoleViewModel> manager = null; 
-           
-            #region Roles
-            HttpResponseMessage response = await client.GetAsync("api/User/GetRoles");
-            if (response.IsSuccessStatusCode)
+            List<UserRoleViewModel> manager = null;
+            try
             {
-                var jsonString = response.Content.ReadAsStringAsync();
-                jsonString.Wait();
-                roles = JsonConvert.DeserializeObject<List<Role>>(jsonString.Result);
-            }
-            if (roles == null || !roles.Any())
-            {
-                ViewBag.Msg = "No Role is available";
-            }
-            ViewBag.roles = new SelectList(roles, "RoleId", "RoleName");
+                client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
 
-            #endregion
+                #region Roles
+                HttpResponseMessage response = await client.GetAsync("api/User/GetRoles");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = response.Content.ReadAsStringAsync();
+                    jsonString.Wait();
+                    roles = JsonConvert.DeserializeObject<List<Role>>(jsonString.Result);
+                }
+                if (roles == null || !roles.Any())
+                {
+                    ViewBag.Msg = "No Role is available";
+                }
+                ViewBag.roles = new SelectList(roles, "RoleId", "RoleName");
 
-            #region Manager
-            HttpResponseMessage msg = await client.GetAsync("api/User/managers/" + id);
-            if (msg.IsSuccessStatusCode)
-            {
-                var jsonString = msg.Content.ReadAsStringAsync();
-                jsonString.Wait();
-                manager = JsonConvert.DeserializeObject<List<UserRoleViewModel>>(jsonString.Result);
-            }
-            if (manager == null || !manager.Any())
-            {
-                ViewBag.Msg = "No Manager is available";
-            }
-            ViewBag.manager = new SelectList(manager, "ManagerId", "ManagerName");
+                #endregion
 
-            #endregion
-            #region Userdata
-            HttpResponseMessage response1 = await client.GetAsync("api/User/" + id);
-            if (response1.IsSuccessStatusCode)
-            {
-                var jsonString = response1.Content.ReadAsStringAsync();
-                jsonString.Wait();
-                var user = JsonConvert.DeserializeObject<User>(jsonString.Result);
+                #region Manager
+                HttpResponseMessage msg = await client.GetAsync("api/User/managers/" + id);
+                if (msg.IsSuccessStatusCode)
+                {
+                    var jsonString = msg.Content.ReadAsStringAsync();
+                    jsonString.Wait();
+                    manager = JsonConvert.DeserializeObject<List<UserRoleViewModel>>(jsonString.Result);
+                }
+                if (manager == null || !manager.Any())
+                {
+                    ViewBag.Msg = "No Manager is available";
+                }
+                ViewBag.manager = new SelectList(manager, "ManagerId", "ManagerName");
 
-                return View(user);
+                #endregion
+               
+                #region Userdata
+                HttpResponseMessage response1 = await client.GetAsync("api/User/" + id);
+                if (response1.IsSuccessStatusCode)
+                {
+                    var jsonString = response1.Content.ReadAsStringAsync();
+                    jsonString.Wait();
+                    var user = JsonConvert.DeserializeObject<User>(jsonString.Result);
+
+                    return View(user);
+                }
+                else
+                {
+                    ViewBag.msg = response1.ReasonPhrase;
+                    return View();
+                }
+                #endregion}
             }
-            else
+            catch
             {
-                ViewBag.msg = response1.ReasonPhrase;
                 return View();
             }
-            #endregion
         }
 
-        // POST: UserController/Edit/5
-        [HttpPost]
+            // POST: UserController/Edit/5
+            [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, User user)
         {
@@ -228,6 +258,9 @@ namespace TMS_Application.Controllers
 
             try
             {
+                client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
                 StringContent content = new StringContent
                    (JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
                 var contentType = new MediaTypeWithQualityHeaderValue("application/json");
@@ -242,6 +275,7 @@ namespace TMS_Application.Controllers
                 }
                 else
                 {
+                    ViewBag.msg = response.ReasonPhrase;
                     return View();
                 }
             }
@@ -254,6 +288,9 @@ namespace TMS_Application.Controllers
         // GET: UserController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
+            client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
             HttpResponseMessage response = await client.GetAsync("api/User/" + id);
             if (response.IsSuccessStatusCode)
             {
@@ -277,6 +314,9 @@ namespace TMS_Application.Controllers
         {
             try
             {
+                client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
                 HttpResponseMessage response = await client.DeleteAsync("api/User/" + id);
                 if (response.IsSuccessStatusCode)
                 {
@@ -288,6 +328,7 @@ namespace TMS_Application.Controllers
                 }
                 else
                 {
+                    ViewBag.msg = response.ReasonPhrase;
                     return View();
                 }
             }

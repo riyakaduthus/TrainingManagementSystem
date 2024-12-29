@@ -18,13 +18,16 @@ namespace TMS_Application.Controllers
 
         public BatchController()
         {
-            client.BaseAddress = new Uri("http://localhost:5244/");
+            client.BaseAddress = new Uri("https://localhost:7206/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
         // GET: BatchController
         public async Task<ActionResult> Index()
         {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
             List<BatchViewModel> batches = null;
             HttpResponseMessage response = await client.GetAsync("api/Batch");
             if (response.IsSuccessStatusCode)
@@ -52,6 +55,9 @@ namespace TMS_Application.Controllers
         // GET: BatchController/Details/5
         public async Task<ActionResult> Details(int id)
         {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
             HttpResponseMessage response = await client.GetAsync("api/Batch/" + id);
             if (response.IsSuccessStatusCode)
             {
@@ -79,6 +85,9 @@ namespace TMS_Application.Controllers
         // GET: BatchController/Create
         public async Task<ActionResult> Create()
         {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
             HttpResponseMessage response = await client.GetAsync("api/Batch/GetCourseNames");
             if (response.IsSuccessStatusCode)
             {
@@ -107,6 +116,9 @@ namespace TMS_Application.Controllers
 
             try
             {
+                client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
                 StringContent content = new StringContent
                     (JsonConvert.SerializeObject(batch), Encoding.UTF8, "application/json");
                 var contentType = new MediaTypeWithQualityHeaderValue("application/json");
@@ -146,6 +158,9 @@ namespace TMS_Application.Controllers
         // GET : BatchController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
             HttpResponseMessage response = await client.GetAsync("api/Batch/GetCourseNames");
             if (response.IsSuccessStatusCode)
             {
@@ -187,6 +202,9 @@ namespace TMS_Application.Controllers
 
             try
             {
+                client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
                 StringContent content = new StringContent
                     (JsonConvert.SerializeObject(batch), Encoding.UTF8, "application/json");
                 var contentType = new MediaTypeWithQualityHeaderValue("application/json");
@@ -201,6 +219,7 @@ namespace TMS_Application.Controllers
                 }
                 else
                 {
+                    ViewBag.msg = response.ReasonPhrase;
                     return View();
                 }
             }
@@ -213,6 +232,9 @@ namespace TMS_Application.Controllers
         // GET: BatchController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
             HttpResponseMessage response = await client.GetAsync("api/Batch/" + id);
             if (response.IsSuccessStatusCode)
             {
@@ -236,6 +258,9 @@ namespace TMS_Application.Controllers
         {
             try
             {
+                client.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
                 HttpResponseMessage response = await client.DeleteAsync("api/Batch/" + id);
                 if (response.IsSuccessStatusCode)
                 {
@@ -247,6 +272,7 @@ namespace TMS_Application.Controllers
                 }
                 else
                 {
+                    ViewBag.msg = response.ReasonPhrase;
                     return View();
                 }
             }

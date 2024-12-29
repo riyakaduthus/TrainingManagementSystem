@@ -19,6 +19,7 @@ namespace TMS_WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetBatch()
         {
             return Ok(_batchRepo.GetBatchDetails());
@@ -26,6 +27,7 @@ namespace TMS_WebAPI.Controllers
 
         // GET api/<BatchController>/5
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult Get(int id)
         {
             return Ok(_batchRepo.GetBatchById(id));
@@ -34,7 +36,7 @@ namespace TMS_WebAPI.Controllers
 
         // POST api/<BatchController>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Post(Batch batch)
         {
             _batchRepo.AddBatch(batch);
@@ -44,7 +46,7 @@ namespace TMS_WebAPI.Controllers
 
         // PUT api/<BatchController>/5
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Put(int id, Batch batch)
         {
             _batchRepo.UpdateBatch(id, batch);
@@ -53,7 +55,7 @@ namespace TMS_WebAPI.Controllers
 
         // DELETE api/<BatchController>/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             _batchRepo.DeleteBatch(id);

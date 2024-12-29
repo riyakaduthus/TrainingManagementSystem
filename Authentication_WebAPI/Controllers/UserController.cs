@@ -20,6 +20,7 @@ namespace TMS_WebAPI.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetUser()
         {
             return Ok(_userRepo.GetUsers());
@@ -27,6 +28,7 @@ namespace TMS_WebAPI.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetUsersById(int id)
         {
             return Ok(_userRepo.GetUserDetailsById(id));
@@ -34,7 +36,7 @@ namespace TMS_WebAPI.Controllers
                
     // POST api/<UserController>
         [HttpPost]
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Post(User usr)
         {
             _userRepo.AddUser(usr);
@@ -43,7 +45,7 @@ namespace TMS_WebAPI.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Put(int id, User usr)
         {
             _userRepo.UpdateUser(id, usr);
@@ -52,7 +54,7 @@ namespace TMS_WebAPI.Controllers
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             _userRepo.DeleteUser(id);

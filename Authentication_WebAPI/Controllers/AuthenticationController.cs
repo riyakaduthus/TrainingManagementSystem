@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using Authentication_WebAPI.Models;
 using Microsoft.AspNetCore.Http;
@@ -31,18 +32,30 @@ namespace TMS_WebAPI.Controllers
                 var tokenString = GenerateJSONWebToken(user);
                 response = Ok(new { token = tokenString });
             }
-
             return response;
         }
-
+                
         private string GenerateJSONWebToken(User user)
         {
+            string roleName = _repo.GetRoleName(user.RoleId);
+            List<Role> roles = new List<Role>();
+            roles = _repo.GetAllRoles();
+            
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role, roleName),
+                new Claim(type:"Date", DateTime.Now.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, new Guid().ToString()),
+                  new Claim(JwtRegisteredClaimNames.Sid,user.UserId.ToString())
+            };
+
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Audience"],
-              null,
+              claims,
               expires: DateTime.Now.AddMinutes(120),
               signingCredentials: credentials);
 

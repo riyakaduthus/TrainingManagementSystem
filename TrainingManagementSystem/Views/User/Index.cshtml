@@ -3,7 +3,11 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+@{
+    if(ViewBag.msg!=null){
+        @ViewBag.msg
+    }
+    else{
 <h1>Index</h1>
 
 <p>
@@ -54,3 +58,4 @@
 }
     </tbody>
 </table>
+}}

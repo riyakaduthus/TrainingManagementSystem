@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = "Delete";
 }
+@{
+    if(ViewBag.msg!=null){
+        @ViewBag.msg
+    }
+    else{
 
 <h1>Delete</h1>
 
@@ -49,3 +54,4 @@
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
+}}

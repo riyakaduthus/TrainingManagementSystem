@@ -19,22 +19,23 @@ namespace TMS_WebAPI.Controllers
 
         // GET: api/<CourseController>
         [HttpGet]
-       public IActionResult GetCourses()
+        [Authorize]
+        public IActionResult GetCourses()
         {
             return Ok(_courseRepo.GetCourses());
         }
 
         // GET api/<CourseController>/5
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult Get(int id)
         {
             return Ok(_courseRepo.GetCourseById(id));
         }
 
-
         // POST api/<CourseController>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles="Admin")]
         public IActionResult Post(Course course)
         {
             string courseName = _courseRepo.GetCourseName(course.CourseName);
@@ -52,7 +53,7 @@ namespace TMS_WebAPI.Controllers
 
         // PUT api/<CourseController>/5
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Put(int id, Course course)
         {
             _courseRepo.UpdateCourse(id, course);
@@ -61,7 +62,7 @@ namespace TMS_WebAPI.Controllers
 
         // DELETE api/<CourseController>/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             _courseRepo.DeleteCourse(id);

@@ -24,5 +24,7 @@ namespace Authentication_WebAPI.Models
 
         public bool IsActive { get; set; } // is to perform soft delete
 
+
+
     }
 }

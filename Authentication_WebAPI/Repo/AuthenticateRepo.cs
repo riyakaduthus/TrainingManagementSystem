@@ -19,5 +19,19 @@ namespace TMS_WebAPI.Repo
 
             return user;
         }
+
+        public List<Role> GetAllRoles()
+        {
+            return _dbContext.Roles.ToList();
+        }
+
+        public string GetRoleName(int roleId)
+        {
+            string temp = (from x in _dbContext.Roles
+                           where x.RoleId == roleId
+                           select x.RoleName).FirstOrDefault();
+
+            return temp.ToString();          
+        }
     }
 }
