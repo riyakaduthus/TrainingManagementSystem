@@ -123,7 +123,15 @@ namespace TMS_WebAPI.Repo
         /// <returns></returns>
         public List<Role> GetRoles()
         {
-            return _dbContext.Roles.ToList();
+            List<Role> roles = (from x in _dbContext.Roles
+                                where x.RoleId != 1
+                                select new Role
+                                {
+                                    RoleId = x.RoleId,
+                                    RoleName = x.RoleName
+                                }).ToList();
+            
+            return roles;
         }
         #endregion
 

@@ -1,61 +1,37 @@
 ﻿@model IEnumerable<TMS_Application.ViewModel.UserRoleViewModel>
 
+    <link href="~/css/Card.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Index";
 }
 @{
-    if(ViewBag.msg!=null){
+    if(ViewBag.msg!=null)
+    {
         @ViewBag.msg
     }
-    else{
-<h1>Index</h1>
-
+    else
+    {
 <p>
-    <a asp-action="Create">Create New</a>
+            <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
+        <div class="card-container">
             
-            
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoleName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ManagerName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoleName)
-            </td>
-                       
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-                <td>
-                    @Html.DisplayFor(modelitem => item.ManagerName)
-                </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.UserId  }) |
-                @Html.ActionLink("Details", "Details", new {  id=item.UserId }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.UserId })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            @foreach (var item in Model)
+            {
+                <div class="card" style="padding:5px;">
+                    <div class="card-title"></div>
+                    <div class="card-content">
+                        <p><strong>User Name: </strong>@Html.DisplayFor(modelItem => item.UserName)</p>
+                        <p><strong>Role Name: </strong> @Html.DisplayFor(modelItem => item.RoleName)</p>
+                        <p><strong>Password : </strong> @Html.DisplayFor(modelItem => item.Password)</p>
+                        <p><strong>Manager Name: </strong> @Html.DisplayFor(modelItem => item.ManagerName)</p>
+                    </div>
+                    <div class="card-actions">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.UserId }, new { @class = "btn btn-primary" }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.UserId }, new { @class = "btn btn-secondary" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.UserId }, new { @class = "btn btn-danger" }) |
+                    </div>
+                </div>
+            }
+        </div>
 }}

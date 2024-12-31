@@ -9,6 +9,7 @@ namespace TMS_Application.Controllers
     public class JWT
     {
         public string Token { get; set; }
+        public int UserId { get; set; }
     }
     public class LoginController : Controller
     {
@@ -26,6 +27,7 @@ namespace TMS_Application.Controllers
         public IActionResult Login()
         {
             LoginViewModel loginViewModel = new LoginViewModel();
+            ViewBag.HideHeader = true;
             return View(loginViewModel);
         }
         [HttpPost]
@@ -43,8 +45,12 @@ namespace TMS_Application.Controllers
                 {
                     var stringJWT = response.Content.ReadAsStringAsync().Result;
                     JWT jwt = JsonConvert.DeserializeObject<JWT>(stringJWT);
+                    int userid = jwt.UserId;
 
                     HttpContext.Session.SetString("token", jwt.Token);
+                    HttpContext.Session.SetString("userId", userid.ToString());
+                   
+
                     return RedirectToAction("Index", "Course");
                 }
                 else

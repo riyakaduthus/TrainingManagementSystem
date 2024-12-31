@@ -144,7 +144,7 @@ namespace TMS_Application.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(User usr)
         {
-            usr.CreatedBy = 1;
+            usr.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString("userId"));
             usr.CreatedOn=DateTime.Now;
             usr.IsActive= true;
             usr.UserId ??= 0;
@@ -170,7 +170,7 @@ namespace TMS_Application.Controllers
                 {
                     var errorMessage = await response.Content.ReadAsStringAsync();
                     ViewBag.msg = "Error: " + response.StatusCode + " - " + errorMessage;
-                    return View(usr);
+                    return View();
                     //ViewBag.msg = response.ReasonPhrase;
                     //return View();
                 }
@@ -252,7 +252,7 @@ namespace TMS_Application.Controllers
         public async Task<ActionResult> Edit(int id, User user)
         {
             user.Updated = DateTime.Now;
-            user.UpdatedBy = 1;
+            user.UpdatedBy = Convert.ToInt32(HttpContext.Session.GetString("userId"));
             user.UserId ??= 0;
             user.IsActive = true;
 

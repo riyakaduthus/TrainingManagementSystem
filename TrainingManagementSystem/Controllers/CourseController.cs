@@ -82,7 +82,7 @@ namespace TMS_Application.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Course course)
         {
-            course.CreatedBy = 1;
+            course.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString("userId"));
             course.CreatedOn = DateTime.Now;
             course.CourseId ??= 0;
             
@@ -153,12 +153,12 @@ namespace TMS_Application.Controllers
         }
 
         // POST: CourseController/Edit/5
-        [HttpPost]
+        [HttpPost]        
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, Course course)
         {
             course.Updated = DateTime.Now;
-            course.UpdatedBy = 1;
+            course.UpdatedBy = Convert.ToInt32(HttpContext.Session.GetString("userId"));
 
             try
             {
@@ -221,6 +221,7 @@ namespace TMS_Application.Controllers
         {
             try
             {
+                
                 client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
 

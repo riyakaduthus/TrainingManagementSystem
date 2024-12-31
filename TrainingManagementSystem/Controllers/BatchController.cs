@@ -110,7 +110,7 @@ namespace TMS_Application.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Batch batch)
         {
-            batch.CreatedBy = 1;
+            batch.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString("userId"));
             batch.CreatedOn = DateTime.Now;
             batch.BatchId ??= 0;
 
@@ -197,7 +197,7 @@ namespace TMS_Application.Controllers
         public async Task<ActionResult> Edit(int id, Batch batch)
         {
             batch.Updated = DateTime.Now;
-            batch.UpdatedBy = 1;           
+            batch.UpdatedBy = Convert.ToInt32(HttpContext.Session.GetString("userId"));           
             batch.BatchId ??= 0;
 
             try
@@ -281,5 +281,6 @@ namespace TMS_Application.Controllers
                 return View();
             }
         }
+ 
     }
 }

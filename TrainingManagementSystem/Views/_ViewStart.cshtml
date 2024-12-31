@@ -1,3 +1,7 @@
 ﻿@{
     Layout = "_Layout";
 }
+@{
+    // Set user name for every view using ViewBag
+    ViewBag.User = User.Identity.IsAuthenticated ? User.Identity.Name : "Guest";
+}

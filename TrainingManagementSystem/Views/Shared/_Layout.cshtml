@@ -1,65 +1,113 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TrainingManagementSystem</title>
+    <title>@ViewData["Title"] - Training_Management_System</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/TrainingManagementSystem.styles.css" asp-append-version="true" />
+    <style>
+        body {
+        background-color: #f8f9fa; /* Light gray background */
+        }
+
+        .navbar {
+        background-color: #007bff; /* Bootstrap primary color */
+        }
+
+        .navbar-brand, .nav-link {
+        color: #ffffff !important;
+        }
+
+        .navbar-toggler-icon {
+        background-color: #ffffff;
+        }
+
+        .text-box {
+        text-align: center;
+        margin: 20px 0;
+        }
+
+        .footer {
+        background-color: #343a40; /* Dark footer */
+        color: #ffffff;
+        padding: 15px 0;
+        text-align: center;
+        }
+
+        .btn-logout {
+        color: #ffffff !important;
+        background-color: #dc3545; /* Bootstrap danger color */
+        border: none;
+        padding: 5px 15px;
+        border-radius: 5px;
+        }
+
+        .btn-logout:hover {
+        background-color: #bd2130; /* Darker danger color */
+        }
+    </style>
 </head>
 <body>
-    <script> function showOrhideOnRole(){
-			   var role = '@ViewData["Role"]';
-					  if(role == "Admin"){
-						  document.getElementById("navUser").style.display = "block";
-					  }
-					  else{
-						  document.getElementById("navUser").style.display = "none";
-					  }
-    }
-    </script>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <ul class="navbar-nav flex-grow-1 align-content-end">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="logout">Logout</a>
-                </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-				
-                <ul class="navbar-nav flex-grow-1" id="navUser" >
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Index">Course</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Batch" asp-action="Index">Batch</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">User</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Enrollment" asp-action="Index">Enrollment</a>
-                    </li>                    
-                </ul>
-            </div>
 
+    <header>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-sm navbar-light">
+            <div class="container-fluid">
+                <p class="navbar-brand align-content-center">Training Management System</p>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                @if (ViewBag.HideHeader == null || !ViewBag.HideHeader)
+                {
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Course" asp-action="Index">Course</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Batch" asp-action="Index">Batch</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">User</a>
+                            </li>
+                        </ul>
+
+                        <div class="d-flex justify-content-end mt-3">
+                            <p class="text-light">Welcome  <span>@ViewBag.User</span>  </p>
+                            <a class="btn btn-logout" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                        </div>
+                    </div>
+
+                }
+            </div>
+            </nav>
+
+            <!-- Text Box -->
+            <div class="text-box">
+                <h1 class="display-4">Training Management System</h1>
+                <p class="lead">Efficiently manage courses, batches, users, and enrollments.</p>
+            </div>
+        </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <main role="main" class="pb-5">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
-            &copy; 2024 - TrainingManagementSystem -
-            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Training_Management_System - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-light">Privacy</a>
         </div>
     </footer>
+
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

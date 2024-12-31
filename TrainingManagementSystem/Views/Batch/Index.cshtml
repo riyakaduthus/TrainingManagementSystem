@@ -3,68 +3,41 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<link href="~/css/Card.css" rel="stylesheet"/>
 @{
-    if(ViewBag.msg!=null){
+    if(ViewBag.msg!=null)
+    {
         @ViewBag.msg
     }
     else{
 
-<h1>Index</h1>
+<head>
 
+</head>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create"  class="btn btn-primary">Create New</a>
 </p>
+<div class="card-container">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BatchName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BatchCount)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BatchName)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.CourseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BatchCount)
-            </td>
-            <td>
-			
-       @Html.ActionLink("Edit", "Edit", new { id = item.BatchId })|
-       @Html.ActionLink("Delete", "Delete", new { id = item.BatchId }) |
-       @Html.ActionLink("Details", "Details", new { id = item.BatchId }) |
-       @Html.ActionLink("Enrollment", "Enrollment","Enrollment", new { id = item.BatchId })
-                                 
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    @foreach (var item in Model)
+                    {
+                        <div class="card" style="padding:5px;">
+                            <div class="card-title"></div>
+                            <div class="card-content">
+                                <p><strong>Batch Name : </strong>@Html.DisplayFor(modelItem => item.BatchName)</p>
+                                <p><strong>Start Date: </strong> @Html.DisplayFor(modelItem => item.StartDate)</p>
+                                <p><strong>End Date: </strong> @Html.DisplayFor(modelItem => item.EndDate)</p>
+                                <p><strong>Batch Count: </strong> @Html.DisplayFor(modelItem => item.BatchCount)</p>
+                            </div>
+                            <div class="card-actions">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.BatchId }, new { @class = "btn btn-primary" }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.BatchId }, new { @class = "btn btn-secondary" }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.BatchId }, new { @class = "btn btn-danger" }) |
+                            </div>
+                        </div>
+                    }
+
+   
+</div>
 }}
+

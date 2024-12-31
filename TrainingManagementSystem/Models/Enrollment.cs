@@ -1,4 +1,6 @@
-﻿namespace TMS_Application.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TMS_Application.Models
 {
     public class Enrollment
     {
@@ -22,6 +24,11 @@
         public DateTime? Updated { get; set; }
 
         public bool IsActive { get; set; } // is to perform soft delete
+        [ForeignKey(nameof(Manager)), Column(Order = 1)]
+        public int? ManagerId { get; set; }
+        // [ForeignKey("ManagerId")]
+
+        public virtual User? Manager { get; set; }
     }
 
     public class Feedback

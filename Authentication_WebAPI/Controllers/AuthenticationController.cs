@@ -29,8 +29,10 @@ namespace TMS_WebAPI.Controllers
             var user = _repo.AuthenticateUser(loginViewModel);
             if (user != null)
             {
+                int userid = _repo.GetUserIdbyUsername(loginViewModel);
+                
                 var tokenString = GenerateJSONWebToken(user);
-                response = Ok(new { token = tokenString });
+                response = Ok(new { token = tokenString, userid = userid });
             }
             return response;
         }

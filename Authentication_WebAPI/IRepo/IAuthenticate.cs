@@ -11,5 +11,7 @@ namespace TMS_WebAPI.IRepo
 
         public string GetRoleName(int roleId);
 
+        public int GetUserIdbyUsername(LoginViewModel loginView);
+
     }
 }

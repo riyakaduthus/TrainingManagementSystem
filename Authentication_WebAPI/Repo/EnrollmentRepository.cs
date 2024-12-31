@@ -15,11 +15,14 @@ namespace TMS_WebAPI.Repo
         }
         public Enrollment AddEnrollment(Enrollment enrollment)
         {
-            enrollment.IsActive = true;
-
             _dbContext.Enrollments.Add(enrollment);
             _dbContext.SaveChanges();
             return enrollment;
+        }
+        public int GetManagerId(int id)
+        {
+            var managerId = _dbContext.Users.FirstOrDefault(x => x.UserId == id).ManagerId;
+            return managerId.Value;
         }
 
         public Enrollment GetEnrollmentByEnrollmentId(int id)
@@ -45,23 +48,6 @@ namespace TMS_WebAPI.Repo
             }
             else return false;
         }
-        public List<EnrollmentViewModel> GetEnrollmentViews()
-        {
-            List<EnrollmentViewModel> enroll = null;
-            //(from x in _dbContext.Enrollments
-            //                                    join y in _dbContext.Users on x.UserId equals y.UserId
-            //                                    join z in _dbContext.Batches on x.BatchId equals z.BatchId
-            //                                    select new EnrollmentViewModel
-            //                                    {
-            //                                        EnrollmentId = x.EnrollmentId,
-            //                                        UserId = x.UserId,
-            //                                        UserName = y.UserName,
-            //                                        BatchId = z.BatchId,
-            //                                        BatchName = z.BatchName,
-            //                                        EnrollmentStatus = x.EnrollmentStatus,
-            //                                        RequestedDate = x.RequestedDate
-            //                                    }).ToList();
-            return enroll;
-        }
+       
     }
 }

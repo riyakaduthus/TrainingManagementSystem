@@ -20,7 +20,13 @@ namespace TMS_WebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_enrollmentRepo.GetEnrollmentViews());
+            return Ok();
+        }
+
+        [HttpGet("GetManagerName/{id}")]
+        public IActionResult GetManagerName(int id)
+        {
+            return Ok(_enrollmentRepo.GetManagerId(id));
         }
 
         // GET api/<EnrollmentController>/5

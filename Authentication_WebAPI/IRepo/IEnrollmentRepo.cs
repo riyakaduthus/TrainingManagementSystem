@@ -12,8 +12,9 @@ namespace TMS_WebAPI.IRepo
         Enrollment AddEnrollment(Enrollment enrollment);
         bool UpdateEnrollmentStatus(int id, Enrollment enrollment);
         //No delete as enrolllment can't be deleted
+        int GetManagerId(int id);
 
-        List<EnrollmentViewModel> GetEnrollmentViews();
+
     }    
 
     public interface IFeedbackRepo
