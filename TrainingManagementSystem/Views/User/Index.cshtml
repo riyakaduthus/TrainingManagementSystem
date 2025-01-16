@@ -1,30 +1,30 @@
 ﻿@model IEnumerable<TMS_Application.ViewModel.UserRoleViewModel>
 
-    <link href="~/css/Card.css" rel="stylesheet" />
+<link href="~/css/Card.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Index";
 }
 @{
-    if(ViewBag.msg!=null)
+    if (ViewBag.msg != null)
     {
         @ViewBag.msg
     }
     else
     {
-<p>
+        <p>
             <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+        </p>
         <div class="card-container">
-            
+
             @foreach (var item in Model)
             {
                 <div class="card" style="padding:5px;">
-                    <div class="card-title"></div>
+                    <div class="card-title"> @Html.DisplayFor(modelItem => item.UserName) </div>
                     <div class="card-content">
-                        <p><strong>User Name: </strong>@Html.DisplayFor(modelItem => item.UserName)</p>
-                        <p><strong>Role Name: </strong> @Html.DisplayFor(modelItem => item.RoleName)</p>
-                        <p><strong>Password : </strong> @Html.DisplayFor(modelItem => item.Password)</p>
-                        <p><strong>Manager Name: </strong> @Html.DisplayFor(modelItem => item.ManagerName)</p>
+                        <p><strong>@Html.DisplayNameFor(modelItem => item.RoleName) : </strong> @Html.DisplayFor(modelItem => item.RoleName)</p>
+                        <p><strong>@Html.DisplayNameFor(modelItem => item.EmailId): </strong> @Html.DisplayFor(modelItem => item.EmailId)</p>
+                        <p><strong>@Html.DisplayNameFor(modelItem => item.Password) : </strong> @Html.DisplayFor(modelItem => item.Password)</p>
+                        <p><strong>@Html.DisplayNameFor(modelItem => item.ManagerName) : </strong> @Html.DisplayFor(modelItem => item.ManagerName)</p>
                     </div>
                     <div class="card-actions">
                         @Html.ActionLink("Edit", "Edit", new { id = item.UserId }, new { @class = "btn btn-primary" }) |
@@ -34,4 +34,5 @@
                 </div>
             }
         </div>
-}}
+    }
+}

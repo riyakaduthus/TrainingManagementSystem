@@ -1,48 +1,68 @@
 ﻿@model TMS_Application.ViewModel.LoginViewModel
+
 @{
     ViewData["Title"] = "Login";
+    <script>
+        if (@ViewBag.msg)
+        {
+            alert(@ViewBag.msg);
+        }
+    </script>
 }
+<section class="vh-80" style="background-color: #FAD2D2;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-5 d-none d-md-block align-content-center">
+                            <img src="img\TMS.jpg" alt="login form" class="img-fluid" style="border-radius: 1rem;padding-left:10px" />
+                        </div>
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
 
+                                <form asp-action="Login" method="post">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+                                    <div class="d-flex align-items-center mb-3 pb-1">
+                                        <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+                                        <span class="h1 fw-bold mb-0">Logo</span>
+                                    </div>
 
-<hr />
-@{
-    if (@ViewBag.msg != null)
-    {
-        @ViewBag.msg
-    }
-}
-<div class="row">
-    <div class="row justify-content-center align-items-center" >
-        <div class="col-md-4">
-            <div class="align-content-center rounded-0">
-                <center><h1>Login</h1></center>
-                <form asp-action="Login" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="UserName" class="control-label"></label>
-                        <input asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>      
-                    <div class="form-group">
-                        <label asp-for="Password" class="control-label"></label>
-                        <input asp-for="Password" class="form-control" type="password" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    <div data-mdb-input-init class="form-outline mb-2">
+                                        @* <input type="email" id="form2Example17" class="form-control form-control-lg" /> 
+                                        <label class="form-label" for="UserName">User Name</label>*@
+                                        <input asp-for="EmailId" class="form-control form-control-lg" placeholder="Email Id" />
+                                        <span asp-validation-for="EmailId" class="text-danger"></span>
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-2">
+                                        @* <label class="form-label" for="Password">Password</label> *@
+                                        <input type="password" id="form2Example27" asp-for="Password" class="form-control form-control-lg" placeholder="Password" />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="pt-1 mb-4">
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                                    </div>
+
+                                    <a href="#!" class="small text-muted">Terms of use.</a>
+                                    <a href="#!" class="small text-muted">Privacy policy</a>
+                                </form>
+
+                            </div>
+                        </div>
                     </div>
-                    <br />
-                    <div class="form-group">
-                        <center><input type="submit" value="Login" class="btn btn-primary" />
-                        </center>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        
     }
 }
+
+

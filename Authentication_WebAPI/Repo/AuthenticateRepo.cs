@@ -1,5 +1,6 @@
 ﻿using Authentication_WebAPI.Context;
 using Authentication_WebAPI.Models;
+using Microsoft.AspNetCore.SignalR;
 using TMS_WebAPI.IRepo;
 using TMS_WebAPI.ViewModel;
 
@@ -14,7 +15,7 @@ namespace TMS_WebAPI.Repo
         }
         public User AuthenticateUser(LoginViewModel loginViewModel)
         {
-            var user = _dbContext.Users.FirstOrDefault(x => x.UserName == loginViewModel.UserName
+            var user = _dbContext.Users.FirstOrDefault(x => x.EmailId == loginViewModel.EmailId
             && x.Password == loginViewModel.Password && x.IsActive == true);
 
             return user;
@@ -31,14 +32,17 @@ namespace TMS_WebAPI.Repo
                            where x.RoleId == roleId
                            select x.RoleName).FirstOrDefault();
 
-            return temp.ToString();          
+            return temp.ToString();
         }
-        public int GetUserIdbyUsername(LoginViewModel loginView)
+        public void GetUserIdbyUsername(LoginViewModel loginView, out int UserId, out string UserName)
         {
-            var userId = (from x in _dbContext.Users
-                        where x.UserName == loginView.UserName
-                        select x.UserId).FirstOrDefault();
-            return userId;
+            UserId = (from x in _dbContext.Users
+                      where x.EmailId == loginView.EmailId
+                      select x.UserId).FirstOrDefault();
+
+            UserName = (from x in _dbContext.Users
+                        where x.EmailId == loginView.EmailId
+                        select x.UserName).FirstOrDefault() ?? string.Empty;
         }
     }
 }

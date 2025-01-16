@@ -130,7 +130,8 @@ namespace TMS_Application.Controllers
                     var jsonString = response.Content.ReadAsStringAsync();
                     jsonString.Wait();
                     var temp = JsonConvert.DeserializeObject<Batch>(jsonString.Result);
-                    if(temp != null){
+                    if (temp != null)
+                    {
                         return RedirectToAction(nameof(Index));
                     }
                     else
@@ -197,7 +198,7 @@ namespace TMS_Application.Controllers
         public async Task<ActionResult> Edit(int id, Batch batch)
         {
             batch.Updated = DateTime.Now;
-            batch.UpdatedBy = Convert.ToInt32(HttpContext.Session.GetString("userId"));           
+            batch.UpdatedBy = Convert.ToInt32(HttpContext.Session.GetString("userId"));
             batch.BatchId ??= 0;
 
             try
@@ -281,6 +282,6 @@ namespace TMS_Application.Controllers
                 return View();
             }
         }
- 
+
     }
 }

@@ -1,43 +1,83 @@
 ﻿@model IEnumerable<TMS_Application.ViewModel.BatchViewModel>
 
 @{
+    @Html.AntiForgeryToken()
+    ;
     ViewData["Title"] = "Index";
 }
-<link href="~/css/Card.css" rel="stylesheet"/>
+
+<link href="~/css/Card.css" rel="stylesheet" />
 @{
-    if(ViewBag.msg!=null)
+    @section Scripts
+    {
+        <script>
+            $(document).on('click', '.enroll-btn', function (e) {
+            e.preventDefault();
+            const batchId = $(this).data('batch-id');
+            $.ajax({
+            url: '/Enrollment/RequestEnrollment/',
+            type: 'POST',
+            data: { batchId: batchId },
+            headers: {
+            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            success: function (response) {
+            alert('Enrollment successful!');
+            },
+            error: function (xhr, status, error) {
+            console.error("Response: " + xhr.responseText);
+            }
+            });
+            });
+
+        </script>
+    }
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
+    if (ViewBag.msg != null)
     {
         @ViewBag.msg
     }
-    else{
+    else
+    {
+        <div class="card-container d-flex">
 
-<head>
+            @foreach (var item in Model)
+            {
+                <div class="card">
+                    <div class="card-title align-content-center">
+                        <p>
+                            <strong>
+                                @Html.DisplayFor(modelItem => item.BatchName)
+                            </strong>
+                        </p>
+                    </div>
+                    <div class="card-content">
 
-</head>
-<p>
-    <a asp-action="Create"  class="btn btn-primary">Create New</a>
-</p>
-<div class="card-container">
-
-                    @foreach (var item in Model)
-                    {
-                        <div class="card" style="padding:5px;">
-                            <div class="card-title"></div>
-                            <div class="card-content">
-                                <p><strong>Batch Name : </strong>@Html.DisplayFor(modelItem => item.BatchName)</p>
-                                <p><strong>Start Date: </strong> @Html.DisplayFor(modelItem => item.StartDate)</p>
-                                <p><strong>End Date: </strong> @Html.DisplayFor(modelItem => item.EndDate)</p>
-                                <p><strong>Batch Count: </strong> @Html.DisplayFor(modelItem => item.BatchCount)</p>
-                            </div>
-                            <div class="card-actions">
-                                @Html.ActionLink("Edit", "Edit", new { id = item.BatchId }, new { @class = "btn btn-primary" }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.BatchId }, new { @class = "btn btn-secondary" }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.BatchId }, new { @class = "btn btn-danger" }) |
-                            </div>
-                        </div>
-                    }
-
-   
-</div>
-}}
+                        <p>
+                            <strong>@Html.DisplayNameFor(modelItem => item.StartDate) : </strong>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </p>
+                        <p>
+                            <strong>@Html.DisplayNameFor(modelItem => item.EndDate) : </strong>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </p>
+                        <p>
+                            <strong>@Html.DisplayNameFor(modelItem => item.BatchCount) : </strong>
+                            @Html.DisplayFor(modelItem => item.BatchCount)
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.BatchId }, new { @class = "btn btn-primary" }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.BatchId }, new { @class = "btn btn-secondary" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.BatchId }, new { @class = "btn btn-danger" }) |
+                        <a href="#" class="btn btn-success enroll-btn" data-batch-id="@item.BatchId">Enroll</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
 

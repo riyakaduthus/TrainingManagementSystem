@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TMS_Application.ViewModel.EnrollmentViewModel>
+<link href="~/css/Card.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Enrollment Details</h1>
+
+@{
+    if (@ViewBag.msg != null)
+    {
+        @ViewBag.msg
+    }
+    else
+    {
+        <div class="card-container d-flex">
+            @foreach (var item in Model)
+            {
+                <div class="card col-lg-6 mb-4">
+                    <div class="card-title">
+                    </div>
+                    <div class="card-content">
+                        <p>
+                            <strong>@Html.DisplayNameFor(model => model.UserName)</strong>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </p>
+                        <p>
+                            <strong>@Html.DisplayNameFor(model => model.EnrollmentStatusName)</strong>
+                            @Html.DisplayFor(modelItem => item.EnrollmentStatusName)
+                        </p>
+                        <p>
+                            <strong>@Html.DisplayNameFor(model => model.RequestedDate)</strong>
+                            @Html.DisplayFor(modelItem => item.RequestedDate)
+                        </p>
+                        <p>
+                            <strong>@Html.DisplayNameFor(model => model.ManagerName)</strong>
+                            @Html.DisplayFor(modelItem => item.ManagerName)
+                        </p>
+                        <p>
+                            <strong>@Html.DisplayNameFor(model => model.BatchName)</strong>
+                            @Html.DisplayFor(modelItem => item.BatchName)
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.EnrollmentId }, new { @class = "btn btn-primary" }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.EnrollmentId }, new { @class = "btn btn-secondary" }) |
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}

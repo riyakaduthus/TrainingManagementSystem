@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Security.Principal;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,6 +11,7 @@ namespace TMS_Application.Controllers
     {
         public string Token { get; set; }
         public int UserId { get; set; }
+        public string UserName { get; set; }
     }
     public class LoginController : Controller
     {
@@ -17,7 +19,7 @@ namespace TMS_Application.Controllers
         HttpClient client = new HttpClient();
 
         public LoginController(ILogger<LoginController> logger)
-        { 
+        {
             _logger = logger;
             client.BaseAddress = new Uri("https://localhost:7206/");
             client.DefaultRequestHeaders.Accept.Clear();
@@ -45,18 +47,18 @@ namespace TMS_Application.Controllers
                 {
                     var stringJWT = response.Content.ReadAsStringAsync().Result;
                     JWT jwt = JsonConvert.DeserializeObject<JWT>(stringJWT);
-                    int userid = jwt.UserId;
 
                     HttpContext.Session.SetString("token", jwt.Token);
-                    HttpContext.Session.SetString("userId", userid.ToString());
-                   
+                    HttpContext.Session.SetString("userId", jwt.UserId.ToString());
+                    HttpContext.Session.SetString("userName", jwt.UserName);
 
                     return RedirectToAction("Index", "Course");
                 }
                 else
                 {
-                    _logger.LogCritical("Somone not authenicated is trying to access application");
-                    ViewBag.msg = "User do not exist";
+                    _logger.LogCritical("Someone not authenicated is trying to access application");
+                    ViewBag.msg = "Unauthorized attempt to login!!!!! \n User do not exist";
+                    ViewBag.HideHeader = true;
                     return View();
                 }
             }
@@ -68,6 +70,8 @@ namespace TMS_Application.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("token");
+            HttpContext.Session.Remove("userId");
+            HttpContext.Session.Remove("userName");
             return RedirectToAction("Login");
         }
     }

@@ -29,23 +29,26 @@ namespace TMS_WebAPI.Controllers
             var user = _repo.AuthenticateUser(loginViewModel);
             if (user != null)
             {
-                int userid = _repo.GetUserIdbyUsername(loginViewModel);
-                
+                int UserId = 0;
+                string Username = string.Empty;
+                _repo.GetUserIdbyUsername(loginViewModel, out UserId, out Username);
+
                 var tokenString = GenerateJSONWebToken(user);
-                response = Ok(new { token = tokenString, userid = userid });
+                response = Ok(new { token = tokenString, userid = UserId, username = Username });
             }
             return response;
         }
-                
+
         private string GenerateJSONWebToken(User user)
         {
             string roleName = _repo.GetRoleName(user.RoleId);
             List<Role> roles = new List<Role>();
             roles = _repo.GetAllRoles();
-            
+
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.EmailId),
                 new Claim(ClaimTypes.Role, roleName),
                 new Claim(type:"Date", DateTime.Now.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, new Guid().ToString()),

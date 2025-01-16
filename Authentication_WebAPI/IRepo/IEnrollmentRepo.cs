@@ -7,15 +7,15 @@ namespace TMS_WebAPI.IRepo
 {
     public interface IEnrollmentRepo
     {
-        List<Enrollment> GetEnrollments();
-        Enrollment GetEnrollmentByEnrollmentId(int id);
+        List<EnrollmentViewModel> GetEnrollments();
+        EnrollmentViewModel GetEnrollmentByEnrollmentId(int id);
         Enrollment AddEnrollment(Enrollment enrollment);
         bool UpdateEnrollmentStatus(int id, Enrollment enrollment);
         //No delete as enrolllment can't be deleted
         int GetManagerId(int id);
 
 
-    }    
+    }
 
     public interface IFeedbackRepo
     {

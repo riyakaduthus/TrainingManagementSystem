@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<TMS_Application.Models.Course>
 
-    <link href="~/css/Card.css" rel="stylesheet" />
+<link href="~/css/Card.css" rel="stylesheet" />
 
 @{
     ViewData["Title"] = "Index";
@@ -12,30 +12,29 @@
     }
     else
     {
-
-<p>
+        <p>
             <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
-
-<div class="card-container">
-            
+        </p>
+        <div class="card-container d-flex">
             @foreach (var item in Model)
             {
-                <div class="card" style="padding:5px;">
-                    <div class="card-title"></div>
+                <div class="card col-lg-6 mb-4">
+                    <div class="card-title">
+                        <p><strong>@Html.DisplayFor(modelItem => item.CourseName)</strong></p>
+                    </div>
                     <div class="card-content">
-                        <p><strong>Course Name: </strong>@Html.DisplayFor(modelItem => item.CourseName)</p>
-                        <p><strong>Course Description: </strong> @Html.DisplayFor(modelItem => item.CourseDescription)</p>
-                        <p><strong>Duration In Days: </strong> @Html.DisplayFor(modelItem => item.DurationInDays)</p>
-                        <p><strong>Availablity of Course: </strong> @Html.DisplayFor(modelItem => item.Availablity)</p>
+                        <p><strong>@Html.DisplayNameFor(modelItem => item.CourseDescription) </strong> @Html.DisplayFor(modelItem => item.CourseDescription)</p>
+                        <p><strong>@Html.DisplayNameFor(modelItem => item.DurationInDays) </strong> @Html.DisplayFor(modelItem => item.DurationInDays)</p>
+                        <p><strong>@Html.DisplayNameFor(modelItem => item.Availablity) </strong> @Html.DisplayFor(modelItem => item.Availablity)</p>
                     </div>
                     <div class="card-actions">
                         @Html.ActionLink("Edit", "Edit", new { id = item.CourseId }, new { @class = "btn btn-primary" }) |
                         @Html.ActionLink("Details", "Details", new { id = item.CourseId }, new { @class = "btn btn-secondary" }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.CourseId }, new { @class = "btn btn-danger" }) |
-                            </div>
+                    </div>
                 </div>
-            }            
+            }
 
-       </div>
-       }}
+        </div>
+    }
+}

@@ -1,0 +1,61 @@
+﻿@model TMS_Application.ViewModel.EnrollmentViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @Html.HiddenFor(model => model.EnrollmentId)
+                @Html.HiddenFor(model => model.UserId)
+                @Html.HiddenFor(model => model.BatchId)
+                @Html.HiddenFor(model => model.ManagerId)
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestedDate" class="control-label"></label>
+                <input asp-for="RequestedDate" class="form-control" type="text" readonly
+                       value="@Model.RequestedDate.ToString("dd/MM/yyyy")" placeholder="dd/MM/yyyy" />
+                <span asp-validation-for="RequestedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnrollmentStatus" class="control-label"></label>
+                <select asp-for="EnrollmentStatus" class="form-control" asp-items="ViewBag.EnrollmentStatus">
+                </select>
+                <span asp-validation-for="EnrollmentStatus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ManagerName" class="control-label"></label>
+                <input asp-for="ManagerName" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="BatchName" class="control-label"></label>
+                <input asp-for="BatchName" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                @Html.HiddenFor(model => model.CreatedBy)
+                @Html.HiddenFor(model => model.CreatedOn)
+                @Html.HiddenFor(model => model.IsActive)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

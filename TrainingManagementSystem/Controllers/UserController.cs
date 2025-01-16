@@ -21,7 +21,7 @@ namespace TMS_Application.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
-        // GET: UserController
+
         public async Task<ActionResult> Index()
         {
             List<UserRoleViewModel> user = null;
@@ -36,7 +36,7 @@ namespace TMS_Application.Controllers
                     var jsonString = response.Content.ReadAsStringAsync();
                     jsonString.Wait();
                     user = JsonConvert.DeserializeObject<List<UserRoleViewModel>>(jsonString.Result);
-                    if (user !=null)
+                    if (user != null)
                     {
                         return View(user);
                     }
@@ -44,7 +44,7 @@ namespace TMS_Application.Controllers
                     {
                         ViewBag.msg = "No User exists";
                         return View();
-                        
+
                     }
                 }
                 else
@@ -56,10 +56,10 @@ namespace TMS_Application.Controllers
             catch { return View(); }
         }
 
-        // GET: UserController/Details/5
+
         public async Task<ActionResult> Details(int id)
-        {            
-            try 
+        {
+            try
             {
                 client.DefaultRequestHeaders.Authorization =
                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
@@ -93,7 +93,7 @@ namespace TMS_Application.Controllers
             }
         }
 
-        // GET: UserController/Create
+
         public async Task<ActionResult> Create()
         {
             List<Role> roles = null;
@@ -145,8 +145,8 @@ namespace TMS_Application.Controllers
         public async Task<ActionResult> Create(User usr)
         {
             usr.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString("userId"));
-            usr.CreatedOn=DateTime.Now;
-            usr.IsActive= true;
+            usr.CreatedOn = DateTime.Now;
+            usr.IsActive = true;
             usr.UserId ??= 0;
             try
             {
@@ -181,7 +181,7 @@ namespace TMS_Application.Controllers
             }
         }
 
-        // GET: UserController/Edit/5
+
         public async Task<ActionResult> Edit(int id)
         {
             List<Role> roles = null;
@@ -222,7 +222,7 @@ namespace TMS_Application.Controllers
                 ViewBag.manager = new SelectList(manager, "ManagerId", "ManagerName");
 
                 #endregion
-               
+
                 #region Userdata
                 HttpResponseMessage response1 = await client.GetAsync("api/User/" + id);
                 if (response1.IsSuccessStatusCode)
@@ -246,8 +246,8 @@ namespace TMS_Application.Controllers
             }
         }
 
-            // POST: UserController/Edit/5
-            [HttpPost]
+        // POST: UserController/Edit/5
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, User user)
         {
@@ -285,7 +285,6 @@ namespace TMS_Application.Controllers
             }
         }
 
-        // GET: UserController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
             client.DefaultRequestHeaders.Authorization =
@@ -307,7 +306,7 @@ namespace TMS_Application.Controllers
             }
         }
 
-        // POST: UserController/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Deleted(int id)

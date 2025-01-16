@@ -1,5 +1,6 @@
 ﻿using Authentication_WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using TMS_WebAPI.IRepo;
 using TMS_WebAPI.Repo;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,8 +11,8 @@ namespace TMS_WebAPI.Controllers
     [ApiController]
     public class EnrollmentController : ControllerBase
     {
-        EnrollmentRepository _enrollmentRepo;
-        public EnrollmentController(EnrollmentRepository enrollmentRepo)
+        IEnrollmentRepo _enrollmentRepo;
+        public EnrollmentController(IEnrollmentRepo enrollmentRepo)
         {
             _enrollmentRepo = enrollmentRepo;
         }
@@ -20,18 +21,18 @@ namespace TMS_WebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok();
+            return Ok(_enrollmentRepo.GetEnrollments());
         }
 
-        [HttpGet("GetManagerName/{id}")]
-        public IActionResult GetManagerName(int id)
+        [HttpGet("GetManagerId/{id}")]
+        public IActionResult GetManagerId(int id)
         {
             return Ok(_enrollmentRepo.GetManagerId(id));
         }
 
         // GET api/<EnrollmentController>/5
         [HttpGet("{id}")]
-        public IActionResult GetEnrollmentById(int id) 
+        public IActionResult GetEnrollmentById(int id)
         {
             return Ok(_enrollmentRepo.GetEnrollmentByEnrollmentId(id));
         }
@@ -41,7 +42,7 @@ namespace TMS_WebAPI.Controllers
         public IActionResult Post(Enrollment enrollment)
         {
             _enrollmentRepo.AddEnrollment(enrollment);
-            return Created("Enrollment Requested",enrollment);
+            return Created("Enrollment Requested", enrollment);
         }
 
         // PUT api/<EnrollmentController>/5
@@ -51,6 +52,6 @@ namespace TMS_WebAPI.Controllers
             _enrollmentRepo.UpdateEnrollmentStatus(id, enrollment);
             return Ok();
         }
-       
+
     }
 }

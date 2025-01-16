@@ -24,12 +24,12 @@ namespace TMS_WebAPI.Repo
         }
         public bool DeleteUser(int UserId)
         {
-            User obj= GetUserById(UserId);
+            User obj = GetUserById(UserId);
             if (obj != null)
             {
 
                 //_dbContext.Remove(obj);
-                obj.IsActive = false;   
+                obj.IsActive = false;
                 _dbContext.SaveChanges();
 
                 return true;
@@ -41,7 +41,7 @@ namespace TMS_WebAPI.Repo
         }
         public bool UpdateUser(int UserId, User user)
         {
-           User obj = GetUserById(UserId);
+            User obj = GetUserById(UserId);
             if (obj != null)
             {
                 obj.UserName = user.UserName;
@@ -50,7 +50,8 @@ namespace TMS_WebAPI.Repo
                 obj.ManagerId = user.ManagerId;
                 obj.Updated = user.Updated;
                 obj.IsActive = user.IsActive;
-                obj.UpdatedBy= user.UpdatedBy;
+                obj.UpdatedBy = user.UpdatedBy;
+                obj.EmailId = user.EmailId;
 
                 _dbContext.SaveChanges();
                 return true;
@@ -63,7 +64,7 @@ namespace TMS_WebAPI.Repo
             var user = _dbContext.Users.FirstOrDefault(x => x.UserId == id && x.IsActive == true);
             return user;
         }
-      
+
         /// <summary>
         /// For Details view of User
         /// </summary>
@@ -73,8 +74,9 @@ namespace TMS_WebAPI.Repo
         {
             var role = (from x in _dbContext.Users
                         join y in _dbContext.Roles on x.RoleId equals y.RoleId
-                        join manager in _dbContext.Users on x.ManagerId equals manager.UserId 
-                        into managerJoin from m in managerJoin.DefaultIfEmpty()
+                        join manager in _dbContext.Users on x.ManagerId equals manager.UserId
+                        into managerJoin
+                        from m in managerJoin.DefaultIfEmpty()
                         where x.IsActive == true && x.UserId == UserId
                         select new UserRoleViewModel
                         {
@@ -83,8 +85,9 @@ namespace TMS_WebAPI.Repo
                             Password = x.Password,
                             RoleName = y.RoleName,
                             UserId = x.UserId,
-                            ManagerId = x.ManagerId,                          
-                            ManagerName = m != null ? m.UserName : null
+                            ManagerId = x.ManagerId,
+                            ManagerName = m != null ? m.UserName : null,
+                            EmailId = x.EmailId
                         }).FirstOrDefault();
             return role;
         }
@@ -110,7 +113,8 @@ namespace TMS_WebAPI.Repo
                                                     RoleName = y.RoleName,
                                                     UserId = x.UserId,
                                                     ManagerId = x.ManagerId,
-                                                    ManagerName = m != null ? m.UserName : null
+                                                    ManagerName = m != null ? m.UserName : null,
+                                                    EmailId = x.EmailId
                                                 }).ToList();
             return userRole;
         }
@@ -130,7 +134,7 @@ namespace TMS_WebAPI.Repo
                                     RoleId = x.RoleId,
                                     RoleName = x.RoleName
                                 }).ToList();
-            
+
             return roles;
         }
         #endregion
@@ -151,7 +155,7 @@ namespace TMS_WebAPI.Repo
                                                    }).ToList();
             return managerInfo;
         }
-  
+
         /// <summary>
         /// To show managers name without the same user
         /// </summary>
