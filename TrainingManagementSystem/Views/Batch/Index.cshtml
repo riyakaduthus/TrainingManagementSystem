@@ -1,12 +1,16 @@
 ﻿@model IEnumerable<TMS_Application.ViewModel.BatchViewModel>
 
 @{
-    @Html.AntiForgeryToken()
-    ;
+    @Html.AntiForgeryToken();
     ViewData["Title"] = "Index";
 }
 
-<link href="~/css/Card.css" rel="stylesheet" />
+<link href="~/css/Card.css" rel="stylesheet" asp-append-version="true"/>
+<style>
+    .action-link {
+    margin-right: 10px;
+    }
+</style>
 @{
     @section Scripts
     {
@@ -33,21 +37,18 @@
         </script>
     }
 
-    <p>
-        <a asp-action="Create" class="btn btn-primary">Create New</a>
-    </p>
-    if (ViewBag.msg != null)
+    if(@ViewBag.msg!=null)
     {
-        @ViewBag.msg
-    }
+        @ViewBag.msg;
+    }    
     else
     {
-        <div class="card-container d-flex">
+        <div class="card-container few-cards">
 
             @foreach (var item in Model)
             {
                 <div class="card">
-                    <div class="card-title align-content-center">
+                    <div class="card-title">
                         <p>
                             <strong>
                                 @Html.DisplayFor(modelItem => item.BatchName)
@@ -70,10 +71,19 @@
                         </p>
                     </div>
                     <div class="card-actions">
-                        @Html.ActionLink("Edit", "Edit", new { id = item.BatchId }, new { @class = "btn btn-primary" }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.BatchId }, new { @class = "btn btn-secondary" }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.BatchId }, new { @class = "btn btn-danger" }) |
-                        <a href="#" class="btn btn-success enroll-btn" data-batch-id="@item.BatchId">Enroll</a>
+                        @if(ViewBag.UserRole != "User")
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.BatchId }, new { @class = "btn btn-primary action-link" })
+
+                            @Html.ActionLink("Details", "Details", new { id = item.BatchId }, new { @class = "btn btn-secondary action-link" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.BatchId }, new { @class = "btn btn-danger" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Details", "Details", new { id = item.BatchId }, new { @class = "btn btn-secondary action-link" })
+                            <a href="#" class="btn btn-success enroll-btn" data-batch-id="@item.BatchId">Enroll</a>
+                        }
+                        
                     </div>
                 </div>
             }

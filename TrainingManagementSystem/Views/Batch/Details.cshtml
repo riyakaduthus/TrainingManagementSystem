@@ -3,12 +3,14 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<style>
+    .updateBorder{
+        margin-left:15px;
+    }
+</style>
 
 <div>
-    <h1> Batch Details</h1>
-
-    <hr />
+    
     <dl class="row">       
        
         <dt class = "col-sm-2">
@@ -41,9 +43,25 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.BatchCount)
         </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(Model=>Model.EnrolledCount)
+        </dt>
+        <dd class="col-sm-10">
+			@Html.DisplayFor(Model => Model.EnrolledCount)
+        </dd>
     </dl>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.BatchId }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+ @if(ViewBag.UserRole != "User")
+ {
+    <div>
+        @Html.ActionLink("Edit", "Edit", new {  id = Model.BatchId }, new { @class = "btn btn-primary updateBorder"})
+        @Html.ActionLink("Back", "Index", new { id = Model.BatchId }, new { @class = "btn btn-primary updateBorder" })
+    </div>
+ }
+ else{
+
+    <div>
+        @Html.ActionLink("Back", "ViewAvailableBatches", new { id = Model.BatchId }, new { @class = "btn btn-primary updateBorder" })
+    </div>
+ }
+  

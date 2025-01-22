@@ -9,9 +9,7 @@ namespace TMS_WebAPI.IRepo
 
         public List<Role> GetAllRoles();
 
-        public string GetRoleName(int roleId);
-
-        public void GetUserIdbyUsername(LoginViewModel loginView, out int UserId, out string UseName);
+        public string GetRoleName(int roleId);      
 
     }
 }

@@ -15,10 +15,12 @@ namespace TMS_Application.ViewModel
         [DisplayName("End Date")]
         public DateTime EndDate { get; set; }
         //number persons can be accomedeated to the batch
-        [DisplayName("Batch Count")]
+        [DisplayName("Number of Maximum Participants")]
         public int BatchCount { get; set; }
         [DisplayName("Availablity of Batch")]
         public bool Availablity { get; set; }
+        [DisplayName("Number of seats taken")]
+        public int EnrolledCount {  get; set; }
 
     }
 }

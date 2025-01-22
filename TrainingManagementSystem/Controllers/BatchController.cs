@@ -15,14 +15,14 @@ namespace TMS_Application.Controllers
         HttpClient client = new HttpClient();
         static List<Batch> batch = null;
         static List<CourseViewModel> courseView = null;
-
+        private void SetViewBag() => ViewBag.UserRole = HttpContext.Session.GetString("roleName");
         public BatchController()
         {
             client.BaseAddress = new Uri("https://localhost:7206/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
-        // GET: BatchController
+       
         public async Task<ActionResult> Index()
         {
             client.DefaultRequestHeaders.Authorization =
@@ -32,6 +32,7 @@ namespace TMS_Application.Controllers
             HttpResponseMessage response = await client.GetAsync("api/Batch");
             if (response.IsSuccessStatusCode)
             {
+                SetViewBag();
                 var jsonString = response.Content.ReadAsStringAsync();
                 jsonString.Wait();
                 batches = JsonConvert.DeserializeObject<List<BatchViewModel>>(jsonString.Result);
@@ -52,7 +53,35 @@ namespace TMS_Application.Controllers
             }
         }
 
-        // GET: BatchController/Details/5
+        public async Task<ActionResult> ViewAvailableBatches()
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+            List<BatchViewModel> batches = null;
+            HttpResponseMessage response = await client.GetAsync("api/Batch/GetAvailableBatches");
+            if (response.IsSuccessStatusCode)
+            {
+                SetViewBag();
+                var jsonString = response.Content.ReadAsStringAsync();
+                jsonString.Wait();
+                batches = JsonConvert.DeserializeObject<List<BatchViewModel>>(jsonString.Result);
+                if (batches.Count == 0)
+                {
+                    ViewBag.msg = "No batch exists!!!";
+                    return View();
+                }
+                else
+                {
+                    return View(batches);
+                }
+            }
+            else
+            {
+                ViewBag.msg = response.ReasonPhrase;
+                return View();
+            }
+        }
+
         public async Task<ActionResult> Details(int id)
         {
             client.DefaultRequestHeaders.Authorization =
@@ -61,6 +90,7 @@ namespace TMS_Application.Controllers
             HttpResponseMessage response = await client.GetAsync("api/Batch/" + id);
             if (response.IsSuccessStatusCode)
             {
+                SetViewBag();
                 var jsonString = response.Content.ReadAsStringAsync();
                 jsonString.Wait();
                 var batch = JsonConvert.DeserializeObject<BatchViewModel>(jsonString.Result);
@@ -81,8 +111,7 @@ namespace TMS_Application.Controllers
                 return View();
             }
         }
-
-        // GET: BatchController/Create
+        
         public async Task<ActionResult> Create()
         {
             client.DefaultRequestHeaders.Authorization =
@@ -105,7 +134,7 @@ namespace TMS_Application.Controllers
             return View();
         }
 
-        // POST: BatchController/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Batch batch)
@@ -155,8 +184,7 @@ namespace TMS_Application.Controllers
             }
 
         }
-
-        // GET : BatchController/Edit/5
+       
         public async Task<ActionResult> Edit(int id)
         {
             client.DefaultRequestHeaders.Authorization =
@@ -192,7 +220,6 @@ namespace TMS_Application.Controllers
             }
         }
 
-        // POST: BatchController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, Batch batch)
@@ -229,8 +256,7 @@ namespace TMS_Application.Controllers
                 return View();
             }
         }
-
-        // GET: BatchController/Delete/5
+                
         public async Task<ActionResult> Delete(int id)
         {
             client.DefaultRequestHeaders.Authorization =
@@ -252,7 +278,6 @@ namespace TMS_Application.Controllers
             }
         }
 
-        // POST: BatchController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Deleted(int id)

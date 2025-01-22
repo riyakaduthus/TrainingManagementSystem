@@ -34,15 +34,5 @@ namespace TMS_WebAPI.Repo
 
             return temp.ToString();
         }
-        public void GetUserIdbyUsername(LoginViewModel loginView, out int UserId, out string UserName)
-        {
-            UserId = (from x in _dbContext.Users
-                      where x.EmailId == loginView.EmailId
-                      select x.UserId).FirstOrDefault();
-
-            UserName = (from x in _dbContext.Users
-                        where x.EmailId == loginView.EmailId
-                        select x.UserName).FirstOrDefault() ?? string.Empty;
-        }
     }
 }

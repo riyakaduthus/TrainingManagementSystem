@@ -19,7 +19,7 @@
 
         public DateTime? Updated { get; set; }
         public bool IsActive { get; set; }
-
+        public int EnrolledCount { get; set; }
 
     }
 }

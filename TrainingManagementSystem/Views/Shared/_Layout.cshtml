@@ -6,39 +6,43 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Training_Management_System</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <!-- jQuery (required for Bootstrap's JavaScript plugins) -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
         body {
-            background-color: #f8f9fa; /* Light gray background */
+        background-color: #f8f9fa; /* Light gray background */
         }
 
         .navbar {
-            background-color: #FAD2D2; /* Bootstrap primary color */
+        background-color: #FAD2D2; /* Bootstrap primary color */
         }
 
         .navbar-brand, .nav-link {
-            color: #000000 !important;
-            margin-right: auto;
+        color: #000000 !important;
+        margin-right: auto;
         }
 
         .navbar-toggler-icon {
-            background-color: #ffffff;
+        background-color: #ffffff;
         }
 
         .text-box {
-            text-align: center;
-            margin: 20px 0;
+        text-align: center;
+        margin: 20px 0;
         }
 
         .footer {
-            background-color: #343a40; /* Dark footer */
-            color: #ffffff;
-            padding: 15px 0;
-            text-align: center;
+        background-color: #343a40; /* Dark footer */
+        color: #ffffff;
+        padding: 15px 0;
+        text-align: center;
         }
     </style>
 </head>
@@ -48,32 +52,72 @@
         <!-- Navbar -->
         @if (ViewBag.HideHeader == null || !ViewBag.HideHeader)
         {
+
+
+
             <nav class="navbar navbar-expand-sm navbar-light">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Training Management System</a>
+                    <a class="navbar-brand" href="#">ABC Training Institution</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
-                            aria-expanded="false" aria-label="Toggle navigation">
+                    aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
                     <div class="navbar-collapse collapse" id="navBarCollapse">
                         <ul class="navbar-nav">
-                            <li class="nav-item active">
-                                <a class="nav-link" asp-area="" asp-controller="Course" asp-action="Index">Course</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Batch" asp-action="Index">Batch</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">User</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Enrollment" asp-action="Index">Enrollment</a>
-                            </li>
+                            @if (ViewBag.UserRole != "User")
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Course Details</a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                        <li class="dropdown-item active">
+                                            <a class="nav-link" asp-area="" asp-controller="Course" asp-action="Index">View all Courses</a>
+                                        </li>                                  
+                                        <li class="dropdown-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Course" asp-action="Create">Create new Course</a>
+                                        </li>
+                                    </ul>                                
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Batch</a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown2">
+
+                                        <li class="dropdown-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Batch" asp-action="Index">View all Batches</a>
+                                        </li>                                    
+                                        <li class="dropdown-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Batch" asp-action="Create">Create new Batch</a>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Enrollment" asp-action="Index">View enrollments for the batch</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="dropdown3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown3">
+                                        <li class="dropdown-item">
+                                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">View all Users</a>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="Create">Create new User</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                            else{
+                                <li class="nav-item active">
+                                    <a class="nav-link" asp-area="" asp-controller="Course" asp-action="ViewAvailableCourses">View Available Courses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Batch" asp-action="ViewAvailableBatches">View Available Batches</a>
+                                </li>
+                            }
                         </ul>
-                        <ul class="navbar-nav ml-auto">
+                            
+                            <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <p class="nav-link">Welcome <span>@ViewBag.User&nbsp;</span></p>
+                                <p class="nav-link fw-bolder">Welcome <span>@ViewBag.User&nbsp;</span></p>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
@@ -98,15 +142,8 @@
             &copy; 2024 - Training_Management_System - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-light">Privacy</a>
         </div>
     </footer>
+        <!-- Scripts -->
 
-    <!-- Scripts -->
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html> 

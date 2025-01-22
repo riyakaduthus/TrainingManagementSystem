@@ -13,6 +13,7 @@ namespace TMS_Application.Controllers
     {
         HttpClient client = new HttpClient();
         static List<Course> course = null;
+        private void SetViewBag() => ViewBag.UserRole = HttpContext.Session.GetString("roleName");
         public CourseController()
         {
             client.BaseAddress = new Uri("https://localhost:7206/");
@@ -29,6 +30,7 @@ namespace TMS_Application.Controllers
             HttpResponseMessage response = await client.GetAsync("api/Course");
             if (response.IsSuccessStatusCode)
             {
+                SetViewBag();
                 var jsonString = response.Content.ReadAsStringAsync();
                 jsonString.Wait();
                 course = JsonConvert.DeserializeObject<List<Course>>(jsonString.Result);
@@ -48,6 +50,37 @@ namespace TMS_Application.Controllers
                 return View();
             }
         }
+        public async Task<ActionResult> ViewAvailableCourses()
+        {
+            client.DefaultRequestHeaders.Authorization =
+                 new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
+
+            HttpResponseMessage response = await client.GetAsync("api/Course/GetAvailableCourses");
+            if (response.IsSuccessStatusCode)
+            {
+                SetViewBag();
+                var jsonString = response.Content.ReadAsStringAsync();
+                jsonString.Wait();
+                course = JsonConvert.DeserializeObject<List<Course>>(jsonString.Result);
+                if (course != null)
+                {
+                    return View(course);
+                }
+                else
+                {
+                    ViewBag.msg = "No course is there. Add a new Course!!!!";
+                    return View();
+                }
+            }
+            else
+            {
+                ViewBag.msg = response.ReasonPhrase;
+                return View();
+            }
+        }
+
+
+
 
         // GET: CourseController/Details/5
         public async Task<ActionResult> Details(int id)
@@ -58,6 +91,7 @@ namespace TMS_Application.Controllers
             HttpResponseMessage response = await client.GetAsync("api/Course/" + id);
             if (response.IsSuccessStatusCode)
             {
+                SetViewBag();
                 var jsonString = response.Content.ReadAsStringAsync();
                 jsonString.Wait();
                 var course = JsonConvert.DeserializeObject<Course>(jsonString.Result);

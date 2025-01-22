@@ -25,6 +25,15 @@ namespace TMS_WebAPI.Controllers
             return Ok(_courseRepo.GetCourses());
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("GetAvailableCourses")]
+        public IActionResult GetAvailableCourses()
+        {
+            return Ok(_courseRepo.GetAvailableCourses());
+           
+        }
+
         // GET api/<CourseController>/5
         [HttpGet("{id}")]
         [Authorize]

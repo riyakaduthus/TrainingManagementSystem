@@ -63,31 +63,47 @@ namespace TMS_WebAPI.Repo
         public BatchViewModel GetBatchById(int id)
         {
             var batch = (from x in _dbContext.Batches
-                         join y in _dbContext.Courses
-                         on x.CourseId equals y.CourseId
-                         where x.BatchId == id && x.IsActive == true
+                         join y in _dbContext.Courses on x.CourseId equals y.CourseId
+                         join z in _dbContext.Enrollments on x.BatchId equals z.BatchId
+                         group z by new
+                         {
+                             x.BatchId,
+                             x.BatchName,
+                             x.StartDate,
+                             x.EndDate,
+                             x.BatchCount,
+                             y.CourseName,
+                             y.Availablity,
+                             x.IsActive,
+                             y.CourseId
+                         } into enrollmentsGroup
+                         where enrollmentsGroup.Key.BatchId == id
+                         && enrollmentsGroup.Key.IsActive == true
+                         && enrollmentsGroup.Key.Availablity == true
                          select new BatchViewModel
                          {
-                             BatchName = x.BatchName,
-                             BatchCount = x.BatchCount,
-                             StartDate = x.StartDate,
-                             EndDate = x.EndDate,
-                             CourseName = y.CourseName,
-                             BatchId=x.BatchId,
-                             CourseId=y.CourseId
+                             BatchName = enrollmentsGroup.Key.BatchName,
+                             BatchCount = enrollmentsGroup.Key.BatchCount,
+                             StartDate = enrollmentsGroup.Key.StartDate,
+                             EndDate = enrollmentsGroup.Key.EndDate,
+                             CourseName = enrollmentsGroup.Key.CourseName,
+                             BatchId = enrollmentsGroup.Key.BatchId,
+                             CourseId = enrollmentsGroup.Key.CourseId,
+                             EnrolledCount = enrollmentsGroup.Count()
                          }).FirstOrDefault();
+            
             return batch;
         }
         public Batch GetBatchDetailsById(int batchId)
         {
             return _dbContext.Batches.FirstOrDefault(x => x.BatchId == batchId);
         }
-        public List<BatchViewModel> GetBatchDetails() {
-
+        public List<BatchViewModel> GetBatchDetails()
+        {
             List<BatchViewModel> batchView = (from x in _dbContext.Batches
                                               join y in _dbContext.Courses
                                               on x.CourseId equals y.CourseId
-                                              where x.IsActive == true 
+                                              where x.IsActive == true && y.IsActive == true
                                               select new BatchViewModel
                                               {
                                                   BatchName = x.BatchName,
@@ -96,11 +112,46 @@ namespace TMS_WebAPI.Repo
                                                   EndDate = x.EndDate,
                                                   BatchCount = x.BatchCount,
                                                   BatchId = x.BatchId,
-                                                  Availablity = y.Availablity
-                                              }).ToList();         
-
+                                                  Availablity = y.Availablity,
+                                                  CourseId = y.CourseId
+                                              }).ToList();
             return batchView;
         }
+
+        public List<BatchViewModel> GetAvailableBatchDetails()
+        {
+            List<BatchViewModel> batchViews = (from x in _dbContext.Batches
+                                               join y in _dbContext.Courses on x.CourseId equals y.CourseId
+                                               join z in _dbContext.Enrollments on x.BatchId equals z.BatchId
+                                               group z by new
+                                               {
+                                                   x.BatchId,
+                                                   x.BatchName,
+                                                   x.StartDate,
+                                                   x.EndDate,
+                                                   x.BatchCount,
+                                                   y.CourseName,
+                                                   y.Availablity,
+                                                   x.IsActive
+                                               } into enrollmentsGroup
+                                               where enrollmentsGroup.Key.BatchCount > enrollmentsGroup.Count()
+                                               && enrollmentsGroup.Key.IsActive == true 
+                                               && enrollmentsGroup.Key.Availablity == true
+                                               && enrollmentsGroup.Key.StartDate <= DateTime.Today.AddDays(-1)
+
+                                               select new BatchViewModel
+                                               {
+                                                   BatchName = enrollmentsGroup.Key.BatchName,
+                                                   CourseName = enrollmentsGroup.Key.CourseName,
+                                                   StartDate = enrollmentsGroup.Key.StartDate,
+                                                   EndDate = enrollmentsGroup.Key.EndDate,
+                                                   BatchCount = enrollmentsGroup.Key.BatchCount,
+                                                   BatchId = enrollmentsGroup.Key.BatchId,
+                                                   Availablity =  enrollmentsGroup.Key.Availablity 
+                                               }).ToList();
+            return batchViews;
+        }
+        
 
         /// <summary>
         /// showing course names in the dropdown list

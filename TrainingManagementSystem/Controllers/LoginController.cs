@@ -12,6 +12,7 @@ namespace TMS_Application.Controllers
         public string Token { get; set; }
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public string roleName { get; set; }
     }
     public class LoginController : Controller
     {
@@ -51,20 +52,25 @@ namespace TMS_Application.Controllers
                     HttpContext.Session.SetString("token", jwt.Token);
                     HttpContext.Session.SetString("userId", jwt.UserId.ToString());
                     HttpContext.Session.SetString("userName", jwt.UserName);
+                    HttpContext.Session.SetString("roleName", jwt.roleName);
+                    ViewBag.UserRole = jwt.roleName;
 
                     return RedirectToAction("Index", "Course");
                 }
                 else
                 {
-                    _logger.LogCritical("Someone not authenicated is trying to access application");
-                    ViewBag.msg = "Unauthorized attempt to login!!!!! \n User do not exist";
+                    _logger.LogWarning($"Unauthorized attempt to login with username {user.EmailId}");
+                    ViewBag.msg = "Login failed!!\n please check your credentials";
                     ViewBag.HideHeader = true;
-                    return View();
+                    return View(user);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                _logger.LogError(ex, "An error occurred during login.");
+                ViewBag.msg = "An unexpected error occurred. Please try again later.";
+                ViewBag.HideHeader = true;
+                return View(user);
             }
         }
         public IActionResult Logout()

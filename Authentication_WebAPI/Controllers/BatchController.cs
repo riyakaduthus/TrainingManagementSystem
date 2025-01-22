@@ -24,6 +24,13 @@ namespace TMS_WebAPI.Controllers
         {
             return Ok(_batchRepo.GetBatchDetails());
         }
+        
+        [HttpGet]
+        [Route("GetAvailableBatches")]
+        public IActionResult GetAvailableBatch()
+        {
+            return Ok(_batchRepo.GetAvailableBatchDetails());
+        }
 
         // GET api/<BatchController>/5
         [HttpGet("{id}")]

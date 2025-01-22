@@ -11,6 +11,8 @@ namespace Authentication_WebAPI.IRepo
         bool DeleteBatch(int batchId);
 
         List<BatchViewModel> GetBatchDetails();
+
+        List<BatchViewModel> GetAvailableBatchDetails();
         List<CourseViewModel> GetCourseList();
 
     }

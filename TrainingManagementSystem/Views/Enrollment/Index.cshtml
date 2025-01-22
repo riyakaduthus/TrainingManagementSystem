@@ -1,9 +1,8 @@
 ﻿@model IEnumerable<TMS_Application.ViewModel.EnrollmentViewModel>
-<link href="~/css/Card.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Index";
 }
-<h1>Enrollment Details</h1>
+<link href="~/css/Card.css" rel="stylesheet" asp-append-version="true" />
 
 @{
     if (@ViewBag.msg != null)
@@ -12,10 +11,10 @@
     }
     else
     {
-        <div class="card-container d-flex">
+        <div class="card-container few-cards">
             @foreach (var item in Model)
             {
-                <div class="card col-lg-6 mb-4">
+                <div class="card">
                     <div class="card-title">
                     </div>
                     <div class="card-content">

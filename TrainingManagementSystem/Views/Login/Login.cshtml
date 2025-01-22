@@ -2,15 +2,16 @@
 
 @{
     ViewData["Title"] = "Login";
-    <script>
-        if (@ViewBag.msg)
-        {
-            alert(@ViewBag.msg);
-        }
-    </script>
 }
-<section class="vh-80" style="background-color: #FAD2D2;">
+ <section class="vh-80" style="background-color: #FAD2D2;">
     <div class="container py-5 h-100">
+
+        @if (ViewBag.msg != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.msg
+            </div>
+        }
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
                 <div class="card" style="border-radius: 1rem;">
@@ -21,29 +22,30 @@
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
 
-                                <form asp-action="Login" method="post">
+                                <form asp-action="Login" method="post" id="loginForm">
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                                     <div class="d-flex align-items-center mb-3 pb-1">
                                         <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                                        <span class="h1 fw-bold mb-0">Logo</span>
+                                        <span class="h1 fw-bolder mb-0">ABC Training Instituion <br/> Login </span>
+                                       
                                     </div>
 
                                     <div data-mdb-input-init class="form-outline mb-2">
                                         @* <input type="email" id="form2Example17" class="form-control form-control-lg" /> 
                                         <label class="form-label" for="UserName">User Name</label>*@
-                                        <input asp-for="EmailId" class="form-control form-control-lg" placeholder="Email Id" />
+                                        <input asp-for="EmailId" class="form-control form-control-lg" placeholder="Email Id" id="EmailId" />
                                         <span asp-validation-for="EmailId" class="text-danger"></span>
                                     </div>
 
                                     <div data-mdb-input-init class="form-outline mb-2">
                                         @* <label class="form-label" for="Password">Password</label> *@
-                                        <input type="password" id="form2Example27" asp-for="Password" class="form-control form-control-lg" placeholder="Password" />
+                                        <input type="password" id="Password" asp-for="Password" class="form-control form-control-lg" placeholder="Password" />
                                         <span asp-validation-for="Password" class="text-danger"></span>
                                     </div>
 
                                     <div class="pt-1 mb-4">
-                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="submit" id="btnLogin">Login</button>
                                     </div>
 
                                     <a href="#!" class="small text-muted">Terms of use.</a>
@@ -59,10 +61,9 @@
     </div>
 </section>
 
-@section Scripts {
+@section Scripts
+{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
-

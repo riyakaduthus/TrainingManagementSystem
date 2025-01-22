@@ -1,20 +1,36 @@
-﻿card-container {
+﻿.card-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: space-between;
-    flex-direction:row;
+    flex-wrap: wrap; /* Allows wrapping to the next row */
+    gap: 20px; /* Space between cards */
+    justify-content: flex-start; /* Distributes cards evenly */
+    width: 100%; /* Ensures container spans full width */
 }
 
+    .card-container.few-cards {
+        justify-content: space-evenly; /* Evenly distributes space between cards */
+    }
 .card {
-    background-color: #f9f9f9;
+    flex: 1 1 calc(25% - 20px); /* 4 cards per row */
+    max-width: calc(25% - 20px); /* Ensures cards don't exceed 25% width */
+    box-sizing: border-box; /* Includes padding/border in width calculation */
+    background-color: #f8f9fa; /* Optional: card styling */
+    border: 1px solid #ddd; /* Optional: border styling */
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: calc(33.33% - 20px);
     padding: 15px;
-    box-sizing: border-box;
-    text-align: center;
 }
+
+@media (max-width: 992px) {
+    .card {
+        flex: 1 1 calc(50% - 20px); /* 2 cards per row on medium screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        flex: 1 1 100%; /* 1 card per row on small screens */
+    }
+}
+
 
 .card-content p {
     margin: 5px 0;
@@ -62,14 +78,3 @@
         background-color: #218838;
     }
 
-@media (max-width: 768px) {
-    .card {
-        width: calc(50% - 20px); /* 2 cards per row on smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    .card {
-        width: 100%; /* 1 card per row on very small screens */
-    }
-}

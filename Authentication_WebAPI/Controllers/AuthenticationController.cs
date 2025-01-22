@@ -16,6 +16,7 @@ namespace TMS_WebAPI.Controllers
     {
         IAuthenticate _repo;
         IConfiguration _config;
+        string roleName = string.Empty;
         public AuthenticationController(IAuthenticate repo, IConfiguration configuration)
         {
             _repo = repo;
@@ -25,23 +26,32 @@ namespace TMS_WebAPI.Controllers
         public IActionResult Login(LoginViewModel loginViewModel)
         {
             IActionResult response = Unauthorized();
-
-            var user = _repo.AuthenticateUser(loginViewModel);
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                int UserId = 0;
-                string Username = string.Empty;
-                _repo.GetUserIdbyUsername(loginViewModel, out UserId, out Username);
+                var user = _repo.AuthenticateUser(loginViewModel);
+                if (user != null)
+                {
+                    roleName = _repo.GetRoleName(user.RoleId);
 
-                var tokenString = GenerateJSONWebToken(user);
-                response = Ok(new { token = tokenString, userid = UserId, username = Username });
+                    var tokenString = GenerateJSONWebToken(user);
+                    response = Ok(new { token = tokenString, user.UserId, user.UserName, roleName });
+                }
+                else
+                {
+                    response = BadRequest("Invalid username or password.");
+                }
             }
+            else
+            {
+                response = BadRequest("Invalid login request.");
+            }
+
             return response;
         }
 
         private string GenerateJSONWebToken(User user)
         {
-            string roleName = _repo.GetRoleName(user.RoleId);
+            
             List<Role> roles = new List<Role>();
             roles = _repo.GetAllRoles();
 

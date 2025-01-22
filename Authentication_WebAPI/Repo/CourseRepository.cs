@@ -48,9 +48,22 @@ namespace TMS_WebAPI.Repo
             return course?.CourseName ?? null;
         }
 
+        /// <summary>
+        /// To View all courses
+        /// </summary>
+        /// <returns></returns>
         public List<Course> GetCourses()
         {
             return _dbContext.Courses.Where(x => x.IsActive == true).ToList();
+        }
+
+        /// <summary>
+        /// To View all available courses
+        /// </summary>
+        /// <returns></returns>
+        public List<Course> GetAvailableCourses()
+        {
+            return _dbContext.Courses.Where(x => x.IsActive == true && x.Availablity == true).ToList();
         }
 
         public bool UpdateCourse(int courseId, Course course)

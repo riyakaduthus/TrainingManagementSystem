@@ -1,0 +1,83 @@
+﻿@model IEnumerable<TMS_Application.ViewModel.BatchViewModel>
+
+@{
+    @Html.AntiForgeryToken();
+    ViewData["Title"] = "ViewAvailableBatches";
+}
+<link href="~/css/Card.css" rel="stylesheet" asp-append-version="true" />
+
+<style>
+    .action-link {
+    margin-right: 10px;
+    }
+</style>
+
+@{
+    @section Scripts
+    {
+        <script>
+            $(document).on('click', '.enroll-btn', function (e) {
+
+            e.preventDefault();
+            const batchId = $(this).data('batch-id');
+            debugger;
+            $.ajax({
+            url: '/Enrollment/RequestEnrollment/',
+            type: 'POST',
+            data: { batchId: batchId },
+            headers: {
+            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            success: function (response) {
+            alert('Enrollment successful!');
+            },
+            error: function (xhr, status, error) {
+            console.error("Response: " + xhr.responseText);
+            }
+            });
+            });
+
+        </script>
+    }
+    if(@ViewBag.msg!=null)
+    {
+        @ViewBag.msg;
+    }    
+    else
+    {     
+        <div class="card-container few-cards">
+            @foreach (var item in Model)
+            {
+                <div class="card">
+                        <div class="card-title">
+                            <p>
+                                <strong>
+                                    @Html.DisplayFor(modelItem => item.BatchName)
+                                </strong>
+                            </p>
+                        </div>
+                        <div class="card-content">
+
+                            <p>
+                                <strong>@Html.DisplayNameFor(modelItem => item.StartDate) : </strong>
+                                @Html.DisplayFor(modelItem => item.StartDate)
+                            </p>
+                            <p>
+                                <strong>@Html.DisplayNameFor(modelItem => item.EndDate) : </strong>
+                                @Html.DisplayFor(modelItem => item.EndDate)
+                            </p>
+                            <p>
+                                <strong>@Html.DisplayNameFor(modelItem => item.BatchCount) : </strong>
+                                @Html.DisplayFor(modelItem => item.BatchCount)
+                            </p>
+                        </div>
+                    <div class="card-actions">
+
+                        @Html.ActionLink("View Details", "Details", new { id = item.BatchId }, new { @class = "btn btn-secondary action-link" })
+                        <a href="#" class="btn btn-success enroll-btn" data-batch-id="@item.BatchId">Enroll</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}

@@ -31,15 +31,9 @@
                         <p><strong>@Html.DisplayNameFor(modelItem => item.Availablity) </strong> @Html.DisplayFor(modelItem => item.Availablity)</p>
                     </div>*@
                     <div class="card-actions">
-						@if (ViewBag.UserRole != "User"){
-                            @Html.ActionLink("Edit", "Edit", new { id = item.CourseId }, new { @class = "btn btn-primary action-link" })
-                            @Html.ActionLink("View Details", "Details", new { id = item.CourseId }, new { @class = "btn btn-secondary action-link" })                            
-                            @Html.ActionLink("Delete", "Delete", new { id = item.CourseId }, new { @class = "btn btn-danger" })
-						}
-						else
-						{
-							@Html.ActionLink("View Details", "Details", new { id = item.CourseId }, new { @class = "btn btn-secondary action-link" })
-						}
+                       
+                            @Html.ActionLink("View Details", "Details", new { id = item.CourseId }, new { @class = "btn btn-secondary" })
+                        
                     </div>
                 </div>
             }

@@ -3,70 +3,53 @@
 @{
     ViewData["Title"] = "Details";
 }
+<style>
+    td{
+        font-size:15px;        
+    }
+    tr{
+        text-align:left;
+    }
+    
+</style>
+<div class="card-container">
+    <table class="card col-lg-auto mb-4">>
+        <thead class="card-title">
+            <tr>
+                <td colspan="2" style="text-align:center;"> Course Details </td>
+            </tr>
+        </thead>
+        <tbody class="card-content">
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.CourseName) : </td>
+                <td>@Html.DisplayFor(model => model.CourseName)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.CourseDescription) : </td>
+                <td> @Html.DisplayFor(model => model.CourseDescription)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.DurationInDays) : </td>
+                <td>@Html.DisplayFor(model => model.DurationInDays)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Availablity) : </td>
+                <td>@Html.DisplayFor(model => model.Availablity)</td>
+            </tr>
 
-<h1> Course Details</h1>
+            @if (ViewBag.UserRole != "User")
+            {
+                <tr>
+                    <td>@Html.ActionLink("Edit", "Edit", new { id = Model.CourseId },new { @class = "btn btn-primary"}) </td>
+                    <td>@Html.ActionLink("Back", "Index", new { @class = "btn btn-primary" })</td>
+                </tr>
+            }
+            else{
+                <tr>
+                    <td colspan="2">@Html.ActionLink("Back", "ViewAvailableCourses", new { @class = "btn btn-primary" })</td>
+                </tr>
+            }
+        </tbody>
+    </table>   
+</div>
 
-<div>
-  
-    <dl class="row">
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CourseName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CourseName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CourseDescription)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CourseDescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DurationInDays)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DurationInDays)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Availablity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Availablity)
-        </dd>
-        @* <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedOn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-     *@</dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CourseId }) |
-    <a asp-action="Index">Back to List</a>
-</div>
